@@ -1,14 +1,36 @@
-+++
-date = '2026-10-08'
-draft = false
-title = 'ABOUT ME'
-+++
+---
+title: "Tentang Saya"
+date: 2026-10-09
+draft: false
+---
 
+Saya Moch. Ilham Abdillah, lulusan S1 Biologi ITS dari Kediri. Saya bekerja di perpotongan ekologi, data, dan komunikasi digital: dari survei biodiversitas di lapangan sampai mengelola iklan dan toko online.
 
+## Pendidikan
 
-Halo, my name Moch Ilham Abdillah, Biologist with hands-on experience in biodiversity surveys and environmental reporting, and a growing track record in data-driven digital marketing. As a Biodiversity Expert at PT Properindo Enviro Tech, I identify insects, birds, and mammals in the field and contribute to monitoring and baseline reports for clients such as PT Smelting, PT Antam, and PT Pertamina EP. Previously, I spent nearly two years as a Biodiversity Surveyor at PT ITS Tekno Sains, covering vegetation measurement, flora and fauna identification, and conservation status assessment (KLHK and IUCN).Alongside ecology, I work as a Marketing \& R\&D Intern, where I improved TikTok Shop ad ROI from 1.90 to 3.27, cut cost per order by about 57%, and grew Shopee monthly sales by 702% MoM. Biology graduate of ITS Surabaya, former lab assistant for 90+ students, and open to opportunities in environmental consulting, biodiversity assessment, sustainability, and scientific communication.
+- S1 Biologi, Institut Teknologi Sepuluh Nopember (2021-2025)
+- SMAN 4 Kediri, IPA
 
+## Keahlian
 
+Offshore safety, sea survival, HSSE, identifikasi flora-fauna, analisis data, ads dan marketplace, Canva.
 
-Kontak: mchilhama@gmail.com
+## Sertifikasi
 
+- Basic Offshore Safety Training (Sea Survival)
+- Sensus Burung Pantai Migran
+- PKTI-TD
+- Canva
+- Essential Skills: Social Influence
+
+## Penghargaan
+
+Best Staff of Department Entrepreneurship (dua periode).
+
+## Bahasa
+
+Indonesia, Jawa, Inggris (limited working), Jepang (dasar).
+
+## CV
+
+[Unduh CV](cv.pdf) (letakkan file `cv.pdf` di folder `static/`).

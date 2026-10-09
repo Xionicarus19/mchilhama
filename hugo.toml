@@ -3,12 +3,50 @@ languageCode = "id-ID"
 title = "Moch. Ilham Abdillah"
 theme = "PaperMod"
 
+[pagination]
+  pagerSize = 10
+
+[params]
+  description = "Biolog yang menjembatani sains, data, dan komunikasi digital"
+  author = "Moch. Ilham Abdillah"
+  ShowReadingTime = false
+  ShowBreadCrumbs = true
+  ShowShareButtons = false
+  ShowPostNavLinks = false
+
+  [params.homeInfoParams]
+    Title = "Halo, saya Ilham 👋"
+    Content = """
+Biolog yang menjembatani sains, data, dan komunikasi digital.
+
+Terbuka untuk konsultan lingkungan, marketing, dan proyek freelance.
+"""
+
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/Xionicarus19"
+  [[params.socialIcons]]
+    name = "email"
+    url = "mailto:mchilhama@gmail.com"
+
 [menu]
   [[menu.main]]
-    name = "Tentang"
-    url = "about/"
+    name = "Karya"
+    pageRef = "projects"
     weight = 1
   [[menu.main]]
-    name = "Proyek"
-    url = "projects/"
+    name = "Pengalaman"
+    pageRef = "experience"
     weight = 2
+  [[menu.main]]
+    name = "Tentang"
+    pageRef = "about"
+    weight = 3
+  [[menu.main]]
+    name = "Blog"
+    pageRef = "blog"
+    weight = 4
+  [[menu.main]]
+    name = "Kontak"
+    pageRef = "contact"
+    weight = 5
