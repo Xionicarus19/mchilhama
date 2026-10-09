@@ -1,4 +1,4 @@
-baseURL = "https://Xionicarus19.github.io/"
+baseURL = "https://xionicarus19.github.io/mchilhama/"
 languageCode = "id-ID"
 title = "Moch. Ilham Abdillah"
 theme = "PaperMod"
@@ -6,9 +6,9 @@ theme = "PaperMod"
 [menu]
   [[menu.main]]
     name = "Tentang"
-    url = "/about/"
+    url = "about/"
     weight = 1
   [[menu.main]]
     name = "Proyek"
-    url = "/projects/"
+    url = "projects/"
     weight = 2
