@@ -1,7 +1,7 @@
 baseURL = "https://xionicarus19.github.io/mchilhama/"
 languageCode = "id-ID"
 defaultContentLanguage = "id"
-title = "Ilham Abdillah"
+title = "Moch Ilham Abdillah"
 
 [pagination]
   pagerSize = 10
@@ -9,7 +9,7 @@ title = "Ilham Abdillah"
 [params]
   description = "Biolog yang menjembatani sains, data, dan komunikasi digital"
   # Nama di hero beranda (dianimasikan per huruf). heroRole dipakai untuk judul tab browser.
-  heroName = "Moch. Ilham Abdillah"
+  heroName = "Moch Ilham Abdillah"
   # Foto di depan nama. Taruh file di static/images/ lalu isi, misalnya "images/foto.jpg"
   heroPhoto = "images/fotoku.png"
   # "frame" = foto biasa dengan bingkai lengkung, "cutout" = PNG tanpa latar (siluet)
