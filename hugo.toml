@@ -1,33 +1,26 @@
 baseURL = "https://xionicarus19.github.io/mchilhama/"
 languageCode = "id-ID"
-title = "Moch. Ilham Abdillah"
-theme = "PaperMod"
+defaultContentLanguage = "id"
+title = "Ilham Abdillah"
 
 [pagination]
   pagerSize = 10
 
 [params]
   description = "Biolog yang menjembatani sains, data, dan komunikasi digital"
-  author = "Moch. Ilham Abdillah"
-  ShowReadingTime = false
-  ShowBreadCrumbs = true
-  ShowShareButtons = false
-  ShowPostNavLinks = false
-
-  [params.homeInfoParams]
-    Title = "Halo, saya Ilham 👋"
-    Content = """
-Biolog yang menjembatani sains, data, dan komunikasi digital.
-
-Terbuka untuk konsultan lingkungan, marketing, dan proyek freelance.
-"""
-
-  [[params.socialIcons]]
-    name = "github"
-    url = "https://github.com/Xionicarus19"
-  [[params.socialIcons]]
-    name = "email"
-    url = "mailto:mchilhama@gmail.com"
+  # Nama di hero beranda (dianimasikan per huruf). heroRole dipakai untuk judul tab browser.
+  heroName = "Moch. Ilham Abdillah"
+  # Foto di depan nama. Taruh file di static/images/ lalu isi, misalnya "images/foto.jpg"
+  heroPhoto = ""
+  # "frame" = foto biasa dengan bingkai lengkung, "cutout" = PNG tanpa latar (siluet)
+  heroPhotoStyle = "frame"
+  heroRole = "Biolog & Marketer Digital"
+  cvFile = "cv.pdf"
+  # Tautan sosial (kosongkan untuk menyembunyikan)
+  github = "https://github.com/Xionicarus19"
+  linkedin = ""
+  instagram = ""
+  email = "mchilhama@gmail.com"
 
 [menu]
   [[menu.main]]

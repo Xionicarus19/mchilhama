@@ -1,0 +1,85 @@
+{{ define "main" }}
+<section class="hero">
+  <div class="rays" aria-hidden="true"></div>
+  <ul class="bubbles" aria-hidden="true">
+    {{ range seq 9 }}<li></li>{{ end }}
+  </ul>
+  <div class="hero-center">
+    <figure class="hero-photo{{ if eq site.Params.heroPhotoStyle "cutout" }} cutout{{ end }}">
+      {{ with site.Params.heroPhoto }}
+        <img src="{{ . | relURL }}" alt="Foto {{ site.Params.heroName }}" fetchpriority="high">
+      {{ else }}
+        <svg class="placeholder" viewBox="0 0 120 160" role="img" aria-label="Tempat foto"><circle cx="60" cy="62" r="26" fill="currentColor"/><path d="M8 160c0-36 24-58 52-58s52 22 52 58z" fill="currentColor"/></svg>
+      {{ end }}
+    </figure>
+    {{ $name := site.Params.heroName }}
+    <h1 class="marquee" aria-label="{{ $name }}">
+      <div class="track" aria-hidden="true">
+        {{ range seq 3 }}<div class="group">{{ range split $name " " }}<span class="word">{{ . }}</span>{{ end }}</div>{{ end }}
+      </div>
+    </h1>
+  </div>
+  <a class="scroll-hint" href="#jalur" aria-label="Gulir ke bawah">
+    <svg viewBox="0 0 24 36" width="22" height="32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="32" rx="10"/><circle class="dot" cx="12" cy="11" r="2.2" fill="currentColor" stroke="none"/></svg>
+    <span>Gulir</span>
+  </a>
+</section>
+
+<section id="jalur" class="section">
+  <div class="wrap">
+    <p class="kicker">Keahlian</p>
+    <h2>Lima jalur kerja</h2>
+    <div class="cards">
+      {{ range (site.GetPage "projects").Pages.ByWeight }}
+      <a class="card" href="{{ .RelPermalink }}">
+        <h3>{{ .Title }}</h3>
+        <p>{{ .Summary | plainify }}</p>
+        <span class="more">Lihat detail &rarr;</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <p class="kicker">Dampak</p>
+    <h2>Angka yang bisa saya tunjukkan</h2>
+    <div class="stats">
+      {{ range site.Data.stats }}
+      <div class="stat">
+        <strong>{{ .value }}</strong>
+        <span>{{ .label }}</span>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+{{ $posts := (site.GetPage "blog").Pages.ByDate.Reverse }}
+{{ if $posts }}
+<section class="section">
+  <div class="wrap">
+    <p class="kicker">Blog</p>
+    <h2>Tulisan terbaru</h2>
+    <div class="cards">
+      {{ range first 3 $posts }}
+      <a class="card" href="{{ .RelPermalink }}">
+        <h3>{{ .Title }}</h3>
+        <p class="muted">{{ time.Format "2 January 2006" .Date }}</p>
+        <span class="more">Baca &rarr;</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<section class="section cta-band">
+  <div class="wrap">
+    <h2>Mari bekerja sama</h2>
+    <p>Terbuka untuk konsultan lingkungan, marketing, dan proyek freelance.</p>
+    <a class="btn btn-primary" href="{{ "contact/" | relURL }}">Hubungi Saya</a>
+  </div>
+</section>
+{{ end }}
