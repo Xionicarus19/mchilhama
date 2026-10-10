@@ -96,15 +96,19 @@ body.inner .site-header { position: relative; background: var(--abyss); border-b
 /* Layar penuh: teks raksasa berjalan di belakang, foto diam di depan */
 .hero-center {
   position: relative; z-index: 2; width: 100%; min-height: 100vh;
-  display: grid; place-items: center; overflow: hidden;
+  display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; overflow: hidden;
 }
 .hero-center > * { grid-area: 1 / 1; }
 
 .marquee {
-  position: relative; z-index: 1; width: 100%; margin: 0; overflow: hidden;
+  --slim: .62;                     /* 1 = lebar normal, makin kecil makin ramping (coba .7 atau .65) */
+  --size: clamp(180px, 64vh, 760px);
+  position: relative; z-index: 1; margin: 0; overflow: hidden; justify-self: center;
+  width: calc(100vw / var(--slim));
+  transform: scaleX(var(--slim)); transform-origin: center;
   font-family: "Orbitron", "Inter", system-ui, sans-serif; text-transform: uppercase;
-  font-weight: 900; letter-spacing: .02em; line-height: 1.1;
-  font-size: clamp(130px, 36vh, 440px);
+  font-weight: 600; letter-spacing: .01em; line-height: 1.1;
+  font-size: var(--size);
   animation: titleIn 1.4s ease both;
 }
 .track { display: flex; width: max-content; animation: slideRight 38s linear infinite; will-change: transform; }
@@ -115,21 +119,21 @@ body.inner .site-header { position: relative; background: var(--abyss); border-b
 @keyframes titleIn { from { opacity: 0; filter: blur(14px); } to { opacity: 1; filter: blur(0); } }
 
 .hero-photo {
-  position: relative; z-index: 3; margin: 56px 0 0;
-  height: clamp(260px, 56vh, 600px); aspect-ratio: 3 / 4;
-  border-radius: 999px 999px 26px 26px; overflow: hidden;
-  border: 2px solid rgba(127, 211, 242, .55);
+  position: relative; z-index: 3; margin: 0; align-self: end;   /* menempel di tepi bawah layar */
+  height: clamp(320px, 86vh, 920px); aspect-ratio: 3 / 4;
+  border-radius: 999px 999px 0 0; overflow: hidden;
+  border: 2px solid rgba(127, 211, 242, .55); border-bottom: 0;
   background: linear-gradient(180deg, #0b4a75, #04233b);
   box-shadow: 0 26px 70px rgba(0, 0, 0, .55), 0 0 80px rgba(46, 196, 241, .28);
   animation: photoIn 1.1s cubic-bezier(.2, .7, .2, 1) both;
 }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
 .hero-photo .placeholder { width: 100%; height: 100%; color: rgba(127, 211, 242, .35); }
-.hero-photo.cutout { aspect-ratio: auto; height: clamp(300px, 72vh, 720px); border: 0; border-radius: 0; overflow: visible; background: none; box-shadow: none; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55)); }
+.hero-photo.cutout { aspect-ratio: auto; height: clamp(320px, 88vh, 940px); border: 0; border-radius: 0; overflow: visible; background: none; box-shadow: none; filter: drop-shadow(0 24px 40px rgba(0, 0, 0, .55)); }
 .hero-photo.cutout img { width: auto; height: 100%; object-fit: contain; }
 @keyframes photoIn { from { opacity: 0; transform: translateY(24px) scale(.97); } to { opacity: 1; transform: none; } }
 
-.scroll-hint { position: absolute; z-index: 2; left: 50%; bottom: 26px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .72rem; color: var(--muted); }
+.scroll-hint { display: none; position: absolute; z-index: 5; left: 50%; bottom: 26px; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .72rem; color: var(--muted); }
 .scroll-hint .dot { animation: scrolldot 1.8s ease-in-out infinite; }
 @keyframes scrolldot { 0% { transform: translateY(0); opacity: 1 } 80% { transform: translateY(12px); opacity: 0 } 100% { opacity: 0 } }
 
@@ -201,18 +205,17 @@ body.inner .page-head + .section { padding-top: 40px; }
   .site-nav ul a { font-size: 1.2rem; }
   .nav-toggle:checked ~ .site-nav { opacity: 1; pointer-events: auto; }
   .section { padding: 68px 0; }
-  /* HP: foto di atas, teks raksasa berjalan di bawahnya (sedikit menimpa) */
-  .hero-center { display: flex; flex-direction: column; justify-content: center; padding-top: 70px; }
-  .hero-photo { height: 44vh; margin: 0 0 -3vh; }
-  .hero-photo.cutout { height: 50vh; }
-  .marquee { font-size: clamp(100px, 24vh, 220px); }
+  /* HP: tulisan tetap lewat DI BELAKANG foto; separuh hurufnya mengintip di bawah foto */
+  .hero-photo { height: 66vh; margin: 0; }
+  .hero-photo.cutout { height: 70vh; }
+  .marquee { --size: clamp(130px, 40vh, 340px); align-self: end; margin-bottom: 20vh; }
 }
 
+/* Pengaturan "kurangi gerakan" di perangkat: gerakan dilembutkan, tidak dimatikan.
+   Teks tetap berjalan, hanya lebih lambat, dan efek blur/melayang dihilangkan. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .rays, .bubbles li, .scroll-hint .dot { animation: none; }
   .hero-photo, .marquee { animation: none; }
-  .track { animation: none; transform: none; width: 100%; justify-content: center; }
-  .group:not(:first-child) { display: none; }
-  .marquee { font-size: clamp(40px, 8vw, 120px); }
+  .track { animation-duration: 90s; }
 }

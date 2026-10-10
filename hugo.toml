@@ -11,10 +11,10 @@ title = "Ilham Abdillah"
   # Nama di hero beranda (dianimasikan per huruf). heroRole dipakai untuk judul tab browser.
   heroName = "Moch. Ilham Abdillah"
   # Foto di depan nama. Taruh file di static/images/ lalu isi, misalnya "images/foto.jpg"
-  heroPhoto = ""
+  heroPhoto = "images/fotoku.png"
   # "frame" = foto biasa dengan bingkai lengkung, "cutout" = PNG tanpa latar (siluet)
-  heroPhotoStyle = "frame"
-  heroRole = "Biolog & Marketer Digital"
+  heroPhotoStyle = "cutout"
+  heroRole = "Biology & Marketer Digital"
   cvFile = "cv.pdf"
   # Tautan sosial (kosongkan untuk menyembunyikan)
   github = "https://github.com/Xionicarus19"
