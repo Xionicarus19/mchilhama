@@ -6,6 +6,7 @@
   <title>{{ if .IsHome }}{{ site.Title }} | {{ site.Params.heroRole }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}">
   <meta name="theme-color" content="#02111f">
+  {{ with site.Params.favicon }}<link rel="icon" href="{{ . | relURL }}">{{ else }}<link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}">{{ end }}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700;800;900&display=swap" rel="stylesheet">

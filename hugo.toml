@@ -7,7 +7,7 @@ title = "Ilham"
   pagerSize = 10
 
 [params]
-  description = "Biologi yang menjembatani sains, data, dan komunikasi digital"
+  description = "Biolog yang menjembatani sains, data, dan komunikasi digital"
   # Nama di hero beranda (dianimasikan per huruf). heroRole dipakai untuk judul tab browser.
   heroName = "Moch Ilham Abdillah"
   # Foto di depan nama. Taruh file di static/images/ lalu isi, misalnya "images/foto.jpg"
@@ -18,6 +18,13 @@ title = "Ilham"
   heroBackground = "images/Cinematic Deep Blue Underwater Light.png"
   # Seberapa gelap lapisan di atas gambar latar, 0 (tanpa lapisan) sampai 1 (hitam penuh). Disarankan 0.35 - 0.6
   heroDim = 0.30
+  # Logo di pojok kiri atas. Taruh file di static/images/ lalu isi, misalnya "images/logo.png" (kosong = ikon gelombang bawaan)
+  logo = "images/Logo porto.png"
+  # Teks di samping logo (kosong = pakai judul website). Isi showLogoText = false kalau mau logo saja tanpa teks
+  logoText = "Ilham"
+  showLogoText = true
+  # Ikon di tab browser (favicon). Gambar persegi, misalnya "images/favicon.png" (kosong = ikon gelombang bawaan)
+  favicon = "images/Logo porto.png"
   heroRole = "Biology & Marketer Digital"
   cvFile = "cv.pdf"
   # Tautan sosial (kosongkan untuk menyembunyikan)

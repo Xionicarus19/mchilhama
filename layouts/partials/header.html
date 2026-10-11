@@ -1,7 +1,11 @@
 <header class="site-header">
   <a class="brand" href="{{ "" | relURL }}" aria-label="Beranda">
-    <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 13c3-3 5 3 8 0s5 3 8 0 3 1 4 0M6 19c3-3 5 3 8 0s5 3 8 0 3 1 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-    <span>{{ site.Title }}</span>
+    {{ with site.Params.logo }}
+      <img class="brand-img" src="{{ . | relURL }}" alt="">
+    {{ else }}
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><circle cx="16" cy="16" r="15" fill="none" stroke="currentColor" stroke-width="2"/><path d="M6 13c3-3 5 3 8 0s5 3 8 0 3 1 4 0M6 19c3-3 5 3 8 0s5 3 8 0 3 1 4 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    {{ end }}
+    {{ if ne site.Params.showLogoText false }}<span>{{ site.Params.logoText | default site.Title }}</span>{{ end }}
   </a>
   <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Buka menu">
   <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>

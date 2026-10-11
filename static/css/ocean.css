@@ -36,6 +36,7 @@ img { max-width: 100%; }
 body.inner .site-header { position: relative; background: var(--abyss); border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--cyan); }
 .brand span { color: var(--text); }
+.brand-img { height: 36px; width: auto; max-width: 160px; object-fit: contain; display: block; }
 .site-nav { display: flex; align-items: center; gap: 34px; }
 .site-nav ul { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
 .site-nav ul a { font-size: .92rem; color: var(--muted); padding: 6px 0; border-bottom: 2px solid transparent; transition: color .2s, border-color .2s; }
