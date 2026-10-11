@@ -1,5 +1,6 @@
 {{ define "main" }}
-<section class="hero">
+{{ $bg := site.Params.heroBackground }}
+<section class="hero{{ if $bg }} has-bg{{ end }}"{{ if $bg }} style="{{ printf "--hero-bg: url('%s'); --hero-dim: %v" ($bg | relURL) (site.Params.heroDim | default 0.45) | safeCSS }}"{{ end }}>
   <div class="rays" aria-hidden="true"></div>
   <ul class="bubbles" aria-hidden="true">
     {{ range seq 9 }}<li></li>{{ end }}
@@ -19,10 +20,6 @@
       </div>
     </h1>
   </div>
-  <a class="scroll-hint" href="#jalur" aria-label="Gulir ke bawah">
-    <svg viewBox="0 0 24 36" width="22" height="32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="2" width="20" height="32" rx="10"/><circle class="dot" cx="12" cy="11" r="2.2" fill="currentColor" stroke="none"/></svg>
-    <span>Gulir</span>
-  </a>
 </section>
 
 <section id="jalur" class="section">
