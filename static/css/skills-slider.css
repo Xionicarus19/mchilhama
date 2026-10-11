@@ -1,0 +1,242 @@
+/* Slider keahlian: kartu 3 kolom x 2 baris per halaman, bisa digeser kiri/kanan */
+
+.skills {
+  --sk-bg: #041b33;
+  --sk-bg-soft: #072743;
+  --sk-border: rgba(40, 150, 210, 0.3);
+  --sk-accent: #1cc8ff;
+  --sk-text: #e8f1f8;
+  --sk-muted: #a9bdcc;
+  --sk-gap: 24px;
+  --sk-cols: 1; /* kartu per baris di tiap slide */
+  --sk-rows: 1; /* baris per slide */
+
+  color: var(--sk-text);
+  padding: 0; /* jarak atas/bawah sudah diatur oleh section di tema */
+}
+
+/* ---------- Kepala bagian ---------- */
+.skills__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.skills__eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--sk-accent);
+}
+.skills__title {
+  margin: 0 0 12px;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.15;
+}
+.skills__title span { color: var(--sk-accent); }
+.skills__lead {
+  margin: 0;
+  max-width: 620px;
+  color: var(--sk-muted);
+  line-height: 1.6;
+}
+
+/* ---------- Tombol panah ---------- */
+.skills__controls { display: flex; gap: 10px; flex-shrink: 0; }
+.skills__btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--sk-border);
+  background: var(--sk-bg-soft);
+  color: var(--sk-accent);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s;
+}
+.skills__btn svg {
+  width: 20px; height: 20px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.skills__btn:hover:not(:disabled) {
+  background: rgba(25, 211, 211, 0.12);
+  border-color: var(--sk-accent);
+}
+.skills__btn:active:not(:disabled) { transform: scale(0.94); }
+.skills__btn:disabled { opacity: 0.3; cursor: default; }
+.skills__btn:focus-visible,
+.skills-track:focus-visible {
+  outline: 2px solid var(--sk-accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Track (area yang digeser) ---------- */
+.skills-track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(var(--sk-rows), auto);
+  grid-auto-columns: calc((100% - (var(--sk-cols) - 1) * var(--sk-gap)) / var(--sk-cols));
+  gap: var(--sk-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 2px; /* ruang agar border & bayangan tidak terpotong */
+  margin: -2px;
+}
+.skills-track::-webkit-scrollbar { display: none; }
+.skills-track.is-dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  cursor: grabbing;
+  user-select: none;
+}
+.skills-track.is-dragging a,
+.skills-track.is-dragging img { pointer-events: none; }
+
+.skills-spacer { visibility: hidden; pointer-events: none; height: 0; }
+
+/* ---------- Kartu ---------- */
+.skill-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 182px;
+  padding: 20px;
+  border: 1px solid var(--sk-border);
+  border-radius: 14px;
+  background: linear-gradient(145deg, var(--sk-bg-soft), var(--sk-bg));
+  scroll-snap-align: start;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.skill-card:hover {
+  border-color: rgba(25, 211, 211, 0.55);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.skill-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.skill-card__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-bottom: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2ad4e0, #1cc8ff);
+  color: #04202f;
+}
+.skill-card__icon svg {
+  width: 18px; height: 18px;
+  fill: none; stroke: currentColor; stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.skill-card__title { margin: 0 0 8px; font-size: 1.02rem; line-height: 1.25; }
+.skill-card__desc {
+  margin: 0 0 14px;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--sk-muted);
+}
+.skill-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+}
+/* Tautan "Lihat detail": seluruh kartu ikut bisa diklik */
+.skill-card { position: relative; }
+.skill-card__more {
+  margin-top: auto;
+  align-self: flex-start;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--sk-accent);
+  text-decoration: none;
+}
+.skill-card__more::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.skill-card__more:hover { text-decoration: underline; }
+.skill-card__more:focus-visible { outline: 2px solid var(--sk-accent); outline-offset: 3px; }
+.skill-card__tags li {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(80, 160, 210, 0.16);
+  font-size: 0.68rem;
+  white-space: nowrap;
+}
+
+.skill-card__media {
+  flex: 0 0 38%;
+  max-width: 130px;
+  align-self: center;
+}
+.skill-card__media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ---------- Titik halaman ---------- */
+.skills-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+}
+.skills-dots:empty { display: none; }
+.skills-dots button {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(169, 189, 204, 0.4);
+  cursor: pointer;
+  transition: width 0.25s, background 0.25s;
+}
+.skills-dots button[aria-selected="true"] {
+  width: 26px;
+  background: var(--sk-accent);
+}
+
+/* ---------- Responsif ---------- */
+/* Layar lebar: satu kartu per slide dibuat lebih lega supaya tidak terlihat melar */
+@media (min-width: 641px) {
+  .skill-card { min-height: 230px; padding: 28px 32px; gap: 28px; }
+  .skill-card__icon { width: 44px; height: 44px; margin-bottom: 18px; }
+  .skill-card__icon svg { width: 22px; height: 22px; }
+  .skill-card__title { font-size: 1.3rem; margin-bottom: 10px; }
+  .skill-card__desc { font-size: 0.95rem; max-width: 62ch; margin-bottom: 18px; }
+  .skill-card__tags li { font-size: 0.75rem; padding: 5px 12px; }
+  .skill-card__media { flex: 0 0 32%; max-width: 260px; }
+  .skill-card__media img { aspect-ratio: 4 / 3; }
+}
+
+@media (max-width: 640px) {
+  .skills { --sk-gap: 16px; }
+  .skills__head { flex-direction: column; align-items: flex-start; }
+  .skills__controls { align-self: flex-end; margin-top: -8px; }
+  .skill-card__media { max-width: 110px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skills-track { scroll-behavior: auto; }
+  .skill-card, .skills__btn, .skills-dots button { transition: none; }
+}

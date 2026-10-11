@@ -1,0 +1,82 @@
+{{/*
+  Slider keahlian. Kartu diambil dari halaman di content/projects/ (urut berdasarkan weight).
+  Pakai di beranda dengan:  {{ partial "skills-slider.html" . }}
+
+  Front matter opsional di tiap halaman proyek:
+    icon: leaf          # leaf | megaphone | translate | pen | database | kanban | chart | code | camera | book
+    image: "images/skills/nama.jpg"   # foto kecil di kanan kartu
+    labels: ["Tag 1", "Tag 2"]        # label kecil di bawah deskripsi
+    skill_summary: "Teks pendek khusus untuk kartu"   # kalau kosong dipakai ringkasan halaman
+*/}}
+{{ $pages := (site.GetPage "projects").Pages.ByWeight }}
+{{ $iconBySlug := dict
+  "ekologi-biodiversitas" "leaf"
+  "marketing-ecommerce" "megaphone"
+  "penerjemahan" "translate"
+  "desain-presentasi" "pen"
+  "entri-data" "database"
+  "proyek-pertama" "kanban" }}
+
+<link rel="stylesheet" href="{{ "css/skills-slider.css" | relURL }}">
+
+{{ if $pages }}
+<div class="skills" aria-labelledby="skills-title">
+  <div class="skills__head">
+    <div>
+      <p class="skills__eyebrow">Keahlian</p>
+      <h2 id="skills-title" class="skills__title">Keahlian yang Saya <span>Kuasai</span></h2>
+    </div>
+    <div class="skills__controls" aria-label="Navigasi slide keahlian">
+      <button type="button" class="skills__btn" data-skills-prev aria-label="Geser ke kiri">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <button type="button" class="skills__btn" data-skills-next aria-label="Geser ke kanan">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="skills-slider" data-skills-slider>
+    <div class="skills-track" tabindex="0" role="list" aria-label="Daftar keahlian">
+      {{ range $pages }}
+      {{ $slug := "" }}{{ with .File }}{{ $slug = .ContentBaseName }}{{ end }}
+      {{ $icon := .Params.icon | default (index $iconBySlug $slug) | default "chart" }}
+      {{ $text := .Params.skill_summary | default (.Summary | plainify) }}
+      <article class="skill-card" role="listitem">
+        <div class="skill-card__body">
+          <span class="skill-card__icon" aria-hidden="true">
+            {{ if eq $icon "leaf" }}<svg viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.4 5.1-6.6C9.5 13.5 12 13 12 13"/></svg>
+            {{ else if eq $icon "megaphone" }}<svg viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+            {{ else if eq $icon "translate" }}<svg viewBox="0 0 24 24"><path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 22l-5-10-5 10"/><path d="M14 18h6"/></svg>
+            {{ else if eq $icon "pen" }}<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>
+            {{ else if eq $icon "database" }}<svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
+            {{ else if eq $icon "kanban" }}<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 7v7"/><path d="M12 7v3"/><path d="M16 7v10"/></svg>
+            {{ else if eq $icon "code" }}<svg viewBox="0 0 24 24"><path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/></svg>
+            {{ else if eq $icon "camera" }}<svg viewBox="0 0 24 24"><path d="M14.5 4h-5L8 6H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+            {{ else if eq $icon "book" }}<svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5z"/><path d="M4 19.5V21h16"/></svg>
+            {{ else }}<svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+            {{ end }}
+          </span>
+          <h3 class="skill-card__title">{{ .Title }}</h3>
+          <p class="skill-card__desc">{{ $text | truncate 200 }}</p>
+          {{ with .Params.labels }}
+          <ul class="skill-card__tags">
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+          {{ end }}
+          <a class="skill-card__more" href="{{ .RelPermalink }}">Lihat detail <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        {{ with .Params.image }}
+        <div class="skill-card__media">
+          <img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.hidden=true">
+        </div>
+        {{ end }}
+      </article>
+      {{ end }}
+    </div>
+
+    <div class="skills-dots" data-skills-dots role="tablist" aria-label="Halaman keahlian"></div>
+  </div>
+</div>
+<script src="{{ "js/skills-slider.js" | relURL }}" defer></script>
+{{ end }}

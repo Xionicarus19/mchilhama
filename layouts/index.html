@@ -24,17 +24,7 @@
 
 <section id="jalur" class="section">
   <div class="wrap">
-    <p class="kicker">Keahlian</p>
-    <h2>Lima jalur kerja</h2>
-    <div class="cards">
-      {{ range (site.GetPage "projects").Pages.ByWeight }}
-      <a class="card" href="{{ .RelPermalink }}">
-        <h3>{{ .Title }}</h3>
-        <p>{{ .Summary | plainify }}</p>
-        <span class="more">Lihat detail &rarr;</span>
-      </a>
-      {{ end }}
-    </div>
+    {{ partial "skills-slider.html" . }}
   </div>
 </section>
 
