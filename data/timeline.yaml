@@ -1,0 +1,22 @@
+# Riwayat Perjalanan (urut dari atas ke bawah seperti ditulis).
+# icon: lihat daftar di data/skills.yaml
+items:
+  - period: "2024 – 2025"
+    title: "Asisten Laboratorium (6 Mata Kuliah)"
+    subtitle: "Sistematika Tumbuhan • Ekologi 1 & 2 • Oseanografi Biologi Laut"
+    icon: flask
+
+  - period: "2024"
+    title: "Magang Digital Marketing"
+    subtitle: "MagangHub (6 bulan)"
+    icon: megaphone
+
+  - period: "2024"
+    title: "Surveyor Biodiversitas"
+    subtitle: "PT. Antam Tbk (beberapa proyek)"
+    icon: leaf
+
+  - period: "2026"
+    title: "Sarjana Biologi"
+    subtitle: "Institut Teknologi Sepuluh Nopember (ITS)"
+    icon: graduation

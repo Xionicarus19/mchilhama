@@ -1,0 +1,32 @@
+# Proyek Pilihan di beranda (tampil 3 per baris).
+# image : foto di atas kartu, rasio 16:10 (mis. 1200x750). Taruh di static/images/proyek/.
+#         Kosong atau file tidak ada = latar gradasi biru.
+# link  : opsional, halaman detail (mis. "projects/ekologi-biodiversitas/"). Kosong = kartu tidak bisa diklik.
+# icon  : lihat daftar di data/skills.yaml
+items:
+  - title: "Survei Biodiversitas Hutan Lindung Nek Bindang"
+    icon: leaf
+    role: "Biodiversity Surveyor"
+    org: "PT. Antam Tbk"
+    desc: "Inventarisasi flora-fauna, analisis habitat, dan penyusunan laporan ekologi di area IUPHHK PT. Antam Tbk UBPE Tayan."
+    tags: ["Biodiversitas", "Ekologi", "GIS"]
+    image: "images/proyek/survei-biodiversitas.jpg"
+    link: "projects/ekologi-biodiversitas/"
+
+  - title: "Karakteristik Mikroplastik & EDI pada Kerang Konsumsi"
+    icon: file-text
+    role: "Peneliti"
+    org: "Skripsi"
+    desc: "Analisis karakteristik mikroplastik dan perbandingan nilai EDI pada kerang di Selat Madura dan Pantai Selatan Jawa Timur."
+    tags: ["Mikroplastik", "FTIR", "EDI"]
+    image: "images/proyek/mikroplastik.jpg"
+    link: ""
+
+  - title: "Digital Marketing Keripik Tempe Cap 3 Putra"
+    icon: megaphone
+    role: "Digital Marketer"
+    org: "Proyek Mandiri"
+    desc: "Strategi funnel, konten, iklan, SEO, dan e-commerce untuk meningkatkan brand awareness dan penjualan."
+    tags: ["Social Media", "SEO", "E-commerce"]
+    image: "images/proyek/digital-marketing.jpg"
+    link: "projects/marketing-ecommerce/"

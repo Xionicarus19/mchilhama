@@ -1,0 +1,12 @@
+# Section Kontak di beranda (semua opsional, ada nilai bawaan).
+# Daftar LinkedIn / Email / GitHub / Instagram diambil dari hugo.toml ([params] linkedin, email, github, instagram).
+# Yang kosong di hugo.toml tidak ditampilkan.
+kicker: "Hubungi Saya"
+title: "Mari Berkolaborasi"
+text: "Saya terbuka untuk peluang kerja, penelitian, maupun proyek yang selaras dengan bidang keahlian dan minat saya."
+button: "Hubungi Saya"
+button_link: "contact/"
+# Foto latar (taruh di static/images/). Kosong = gradasi biru. Disarankan foto lebar, gelap, mis. hutan berkabut 1920x700.
+background: "images/latar-kontak.jpg"
+# Tulisan di kanan footer
+tagline: ["Nature", "Data", "Better Future"]

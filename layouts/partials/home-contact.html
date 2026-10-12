@@ -1,0 +1,61 @@
+{{- /*
+  Section terakhir beranda: Kontak (latar foto) + footer.
+  Teks dan latar dari data/contact.yaml (opsional, ada nilai bawaan).
+  Daftar kontak diambil dari hugo.toml: linkedin, email, github, instagram (yang kosong tidak tampil).
+  Pakai di layouts/index.html dengan:  {{ partial "home-contact.html" . }}
+*/ -}}
+{{ $c := default (dict) site.Data.contact }}
+{{ $tagline := default (slice "Nature" "Data" "Better Future") $c.tagline }}
+
+{{ $links := slice }}
+{{ with site.Params.linkedin }}
+  {{ $links = $links | append (dict "label" "LinkedIn" "icon" "linkedin" "href" . "text" (. | replaceRE `^https?://(www\.)?` "" | strings.TrimSuffix "/")) }}
+{{ end }}
+{{ with site.Params.email }}
+  {{ $links = $links | append (dict "label" "Email" "icon" "mail" "href" (printf "mailto:%s" .) "text" .) }}
+{{ end }}
+{{ with site.Params.github }}
+  {{ $links = $links | append (dict "label" "GitHub" "icon" "github" "href" . "text" (. | replaceRE `^https?://(www\.)?` "" | strings.TrimSuffix "/")) }}
+{{ end }}
+{{ with site.Params.instagram }}
+  {{ $links = $links | append (dict "label" "Instagram" "icon" "instagram" "href" . "text" (. | replaceRE `^https?://(www\.)?` "" | strings.TrimSuffix "/")) }}
+{{ end }}
+
+<link rel="stylesheet" href="{{ "css/home-sections.css" | relURL }}">
+
+<section class="ct" id="kontak" aria-labelledby="ct-title"{{ with $c.background }} style="{{ printf "--ct-bg: url('%s')" (. | relURL) | safeCSS }}"{{ end }}>
+  <div class="wrap ct-grid">
+    <div class="ct-main">
+      <p class="ct-kicker">{{ default "Hubungi Saya" $c.kicker }}</p>
+      <h2 class="ct-title" id="ct-title">{{ default "Mari Berkolaborasi" $c.title }}</h2>
+      <p class="ct-text">{{ default "Saya terbuka untuk peluang kerja, penelitian, maupun proyek yang selaras dengan bidang keahlian dan minat saya." $c.text }}</p>
+      <a class="ct-btn" href="{{ default "contact/" $c.button_link | relURL }}">
+        {{ partial "icon.html" "mail" }}<span>{{ default "Hubungi Saya" $c.button }}</span><span aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    {{ if $links }}
+    <span class="ct-divider" aria-hidden="true"></span>
+    <ul class="ct-links">
+      {{ range $links }}
+      <li>
+        <a class="ct-link" href="{{ .href }}"{{ if hasPrefix .href "http" }} target="_blank" rel="noopener"{{ end }}>
+          <span class="ct-ico" aria-hidden="true">{{ partial "icon.html" .icon }}</span>
+          <span class="ct-txt"><strong>{{ .label }}</strong><span>{{ .text }}</span></span>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
+</section>
+
+<footer class="site-footer sf">
+  <div class="wrap sf-inner">
+    <p class="sf-copy">&copy; {{ now.Year }} {{ default site.Title site.Params.heroName }}. All rights reserved.</p>
+    <p class="sf-tag">
+      <span class="sf-leaf" aria-hidden="true">{{ partial "icon.html" "leaf" }}</span>
+      {{ range $i, $w := $tagline }}{{ if $i }}<i aria-hidden="true">&bull;</i>{{ end }}<span>{{ $w }}</span>{{ end }}
+    </p>
+  </div>
+</footer>

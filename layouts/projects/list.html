@@ -1,0 +1,78 @@
+{{- /*
+  Halaman daftar Karya & Proyek (section "projects"): header, filter kategori, kartu 2 kolom.
+
+  Setiap proyek = satu halaman di content/projects/. Front matter yang dipakai:
+    title      Judul kartu
+    weight     Urutan (kecil tampil dulu)
+    category   Kategori. WAJIB: halaman tanpa category tidak ditampilkan di daftar ini
+    icon       Ikon kategori (lihat daftar di partials/icon.html)
+    image      Foto kartu, mis. "images/proyek/nama.jpg" (rasio lebar, ~3:1)
+    labels     Label kecil, mis. ["Survei Lapangan", "Laporan"]
+    summary    Ringkasan di kartu (kalau kosong dipakai awal isi halaman)
+
+  Judul dan pengantar bisa diubah di content/projects/_index.md lewat "heading" dan "lead".
+*/ -}}
+{{ define "main" }}
+{{- $items := slice -}}
+{{- range .Pages.ByWeight -}}
+  {{- if .Params.category }}{{ $items = $items | append . }}{{ end -}}
+{{- end -}}
+
+{{- $cats := slice -}}
+{{- $catIcon := dict -}}
+{{- range $items -}}
+  {{- $c := .Params.category -}}
+  {{- if not (in $cats $c) -}}
+    {{- $cats = $cats | append $c -}}
+    {{- $catIcon = merge $catIcon (dict $c (.Params.icon | default "chart")) -}}
+  {{- end -}}
+{{- end -}}
+
+<link rel="stylesheet" href="{{ "css/projects-page.css" | relURL }}">
+
+<section class="pj">
+  <div class="wrap">
+    <header class="pj-head">
+      <p class="pj-kicker">Portofolio</p>
+      <h1 class="pj-title">{{ .Params.heading | default "Karya & Proyek" }}</h1>
+      <p class="pj-lead">{{ .Params.lead | default "Beberapa proyek dan pengalaman yang pernah saya kerjakan dalam bidang lingkungan, penelitian, dan digital marketing." }}</p>
+    </header>
+
+    {{ if $items }}
+    {{ if gt (len $cats) 1 }}
+    <ul class="pj-filter" data-pj-filter aria-label="Filter kategori proyek">
+      <li><button type="button" class="pj-chip" data-filter="all" aria-pressed="true">Semua</button></li>
+      {{ range $cats }}
+      <li><button type="button" class="pj-chip" data-filter="{{ . | urlize }}" aria-pressed="false"><span class="pj-chip__ico" aria-hidden="true">{{ partial "icon.html" (index $catIcon .) }}</span>{{ . }}</button></li>
+      {{ end }}
+    </ul>
+    {{ end }}
+    <p class="pj-status" data-pj-status aria-live="polite"></p>
+
+    <div class="pj-grid">
+      {{ range $items }}
+      {{ $cat := .Params.category }}
+      <article class="pj-card" data-cat="{{ $cat | urlize }}">
+        <div class="pj-media{{ if not .Params.image }} is-empty{{ end }}">
+          {{ with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+        </div>
+        <div class="pj-body">
+          <p class="pj-cat"><span class="pj-cat__ico" aria-hidden="true">{{ partial "icon.html" (.Params.icon | default "chart") }}</span>{{ $cat }}</p>
+          <h2 class="pj-name"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+          <p class="pj-desc">{{ .Summary | plainify | truncate 170 }}</p>
+          {{ with .Params.labels }}
+          <ul class="pj-tags">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+          {{ end }}
+          <span class="pj-more">Lihat Detail <span aria-hidden="true">&rarr;</span></span>
+        </div>
+      </article>
+      {{ end }}
+    </div>
+    {{ else }}
+    <p class="pj-empty">Belum ada proyek. Buat halaman di <code>content/projects/</code> dan isi <code>category</code> di front matter-nya agar tampil di sini.</p>
+    {{ end }}
+  </div>
+</section>
+
+<script src="{{ "js/projects-filter.js" | relURL }}" defer></script>
+{{ end }}

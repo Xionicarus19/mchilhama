@@ -22,26 +22,7 @@
   </div>
 </section>
 
-<section id="jalur" class="section">
-  <div class="wrap">
-    {{ partial "skills-slider.html" . }}
-  </div>
-</section>
-
-<section class="section section-alt">
-  <div class="wrap">
-    <p class="kicker">Dampak</p>
-    <h2>Angka yang bisa saya tunjukkan</h2>
-    <div class="stats">
-      {{ range site.Data.stats }}
-      <div class="stat">
-        <strong>{{ .value }}</strong>
-        <span>{{ .label }}</span>
-      </div>
-      {{ end }}
-    </div>
-  </div>
-</section>
+{{ partial "home-sections.html" . }}
 
 {{ $posts := (site.GetPage "blog").Pages.ByDate.Reverse }}
 {{ if $posts }}
@@ -62,11 +43,5 @@
 </section>
 {{ end }}
 
-<section class="section cta-band">
-  <div class="wrap">
-    <h2>Mari bekerja sama</h2>
-    <p>Terbuka untuk konsultan lingkungan, marketing, dan proyek freelance.</p>
-    <a class="btn btn-primary" href="{{ "contact/" | relURL }}">Hubungi Saya</a>
-  </div>
-</section>
+{{ partial "home-contact.html" . }}
 {{ end }}

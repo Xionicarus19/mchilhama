@@ -1,0 +1,139 @@
+{{- /*
+  Bagian beranda: Keahlian (slider), Proyek Pilihan, Riwayat Perjalanan + Penelitian Terbaru.
+  Isi semua kartu diambil dari folder data/:
+    data/skills.yaml  data/featured.yaml  data/timeline.yaml  data/publications.yaml
+  Pakai di layouts/index.html dengan:  {{ partial "home-sections.html" . }}
+*/ -}}
+<link rel="stylesheet" href="{{ "css/home-sections.css" | relURL }}">
+
+{{/* ===================== KEAHLIAN (slider) ===================== */}}
+{{ with site.Data.skills.items }}
+<section class="hs" id="keahlian" aria-labelledby="hs-skills-title">
+  <div class="wrap">
+    <div class="skills">
+      <div class="hs-head">
+        <div>
+          <p class="hs-kicker">Keahlian</p>
+          <h2 class="hs-title" id="hs-skills-title">Keahlian yang Saya <span>Kuasai</span></h2>
+        </div>
+        <div class="skills__controls" aria-label="Navigasi slide keahlian">
+          <button type="button" class="skills__btn" data-skills-prev aria-label="Geser ke kiri">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="skills__btn" data-skills-next aria-label="Geser ke kanan">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="skills-slider" data-skills-slider>
+        <div class="skills-track" tabindex="0" role="list" aria-label="Daftar keahlian">
+          {{ range . }}
+          <article class="skill-card" role="listitem">
+            <span class="skill-card__icon" aria-hidden="true">{{ partial "icon.html" .icon }}</span>
+            <h3 class="skill-card__title">{{ .title }}</h3>
+            <p class="skill-card__desc">{{ .desc }}</p>
+          </article>
+          {{ end }}
+        </div>
+        <div class="skills-dots" data-skills-dots role="tablist" aria-label="Halaman keahlian"></div>
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+{{/* ===================== PROYEK PILIHAN ===================== */}}
+{{ with site.Data.featured.items }}
+<section class="hs" id="proyek" aria-labelledby="hs-proj-title">
+  <div class="wrap">
+    <div class="hs-head">
+      <div>
+        <p class="hs-kicker">Proyek Pilihan</p>
+        <h2 class="hs-title" id="hs-proj-title">Karya yang Pernah <span>Saya Kerjakan</span></h2>
+      </div>
+      <a class="hs-link" href="{{ "projects/" | relURL }}">Lihat Semua Proyek <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <div class="proj-grid">
+      {{ range . }}
+      {{ $title := .title }}
+      <article class="proj-card">
+        <div class="proj-media{{ if not .image }} is-empty{{ end }}">
+          {{ with .image }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+        </div>
+        <div class="proj-body">
+          <div class="proj-top">
+            <span class="proj-icon" aria-hidden="true">{{ partial "icon.html" .icon }}</span>
+            <h3 class="proj-title">{{ with .link }}<a href="{{ . | relURL }}">{{ $title }}</a>{{ else }}{{ $title }}{{ end }}</h3>
+          </div>
+          {{ if or .role .org }}
+          <p class="proj-role">{{ with .role }}<span>{{ . }}</span>{{ end }}{{ if and .role .org }}<i aria-hidden="true">|</i>{{ end }}{{ with .org }}<span>{{ . }}</span>{{ end }}</p>
+          {{ end }}
+          {{ with .desc }}<p class="proj-desc">{{ . }}</p>{{ end }}
+          {{ with .tags }}
+          <ul class="proj-tags">
+            {{ range . }}<li>{{ . }}</li>{{ end }}
+          </ul>
+          {{ end }}
+        </div>
+      </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+{{/* ===================== RIWAYAT PERJALANAN + PENELITIAN TERBARU ===================== */}}
+{{ $timeline := site.Data.timeline.items }}
+{{ $pubs := site.Data.publications.items }}
+{{ if or $timeline $pubs }}
+<section class="hs" id="pengalaman" aria-label="Pengalaman, pendidikan, dan publikasi">
+  <div class="wrap">
+    <div class="xp-grid">
+      {{ with $timeline }}
+      <div class="xp-col">
+        <p class="hs-kicker">Pengalaman &amp; Pendidikan</p>
+        <h2 class="hs-title hs-title--lg">Riwayat Perjalanan</h2>
+        <ol class="tl">
+          {{ range . }}
+          <li>
+            <span class="tl-icon" aria-hidden="true">{{ partial "icon.html" .icon }}</span>
+            <div class="tl-text">
+              {{ with .period }}<p class="tl-period">{{ . }}</p>{{ end }}
+              <h3 class="tl-title">{{ .title }}</h3>
+              {{ with .subtitle }}<p class="tl-sub">{{ . }}</p>{{ end }}
+            </div>
+          </li>
+          {{ end }}
+        </ol>
+      </div>
+      {{ end }}
+
+      {{ with $pubs }}{{ with index . 0 }}
+      <div class="pub">
+        <p class="hs-kicker">Publikasi</p>
+        <h2 class="hs-title hs-title--md">Penelitian Terbaru</h2>
+        <div class="pub-inner">
+          <div class="pub-media{{ if not .image }} is-empty{{ end }}">
+            {{ with .image }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+          </div>
+          <div class="pub-text">
+            <h3 class="pub-title">{{ .title }}</h3>
+            {{ if or .venue .year }}
+            <p class="pub-meta">{{ with .venue }}<span>{{ . }}</span>{{ end }}{{ if and .venue .year }}<i aria-hidden="true">|</i>{{ end }}{{ with .year }}<span>{{ . }}</span>{{ end }}</p>
+            {{ end }}
+            {{ with .desc }}<p class="pub-desc">{{ . }}</p>{{ end }}
+            {{ with .link }}
+            <a class="hs-btn" href="{{ . | relURL }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener"{{ end }}>Baca Selengkapnya <span aria-hidden="true">&rarr;</span></a>
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      {{ end }}{{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<script src="{{ "js/skills-slider.js" | relURL }}" defer></script>

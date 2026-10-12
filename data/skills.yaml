@@ -1,50 +1,21 @@
-# Daftar keahlian untuk slider di beranda.
-# Untuk menambah keahlian: salin satu blok "- title: ..." lalu isi.
-# Slider otomatis menambah halaman baru (geser kiri/kanan) kalau kartu lebih dari 6.
+# Keahlian di beranda: tampil 4 kartu per baris. Kalau lebih dari 4, slider otomatis aktif
+# (panah, titik halaman, geser di HP). Untuk menambah, salin satu blok "- title: ..." lalu isi.
 #
-# icon  : leaf | megaphone | translate | pen | database | kanban | chart | code | camera | book
-# image : opsional. Taruh file di static/images/skills/ lalu tulis "images/skills/nama.jpg"
-# tags  : label kecil di bagian bawah kartu
-
+# icon: eco | leaf | droplets | file-search | file-text | growth | megaphone | flask | graduation |
+#       briefcase | microscope | translate | pen | database | kanban | chart | code | camera | book
 items:
   - title: "Ekologi & Biodiversitas"
-    icon: leaf
-    desc: "Identifikasi flora dan fauna, survei biodiversitas, penilaian status konservasi (IUCN & KLHK), serta penyusunan laporan monitoring dan baseline lingkungan."
-    image: "images/skills/ekologi.jpg"
-    tags: ["Survei Lapangan", "IUCN", "Monitoring"]
+    icon: eco
+    desc: "Survei flora-fauna, analisis ekosistem, dan pemantauan keanekaragaman hayati."
 
-  - title: "Digital Marketing & E-commerce"
-    icon: megaphone
-    desc: "Optimasi iklan TikTok Shop & Shopee, pengelolaan konten, analisis performa kampanye, dan strategi peningkatan penjualan."
-    image: "images/skills/marketing.jpg"
-    tags: ["TikTok Shop", "Shopee", "Analytics"]
+  - title: "Monitoring Lingkungan"
+    icon: droplets
+    desc: "Pemantauan kualitas air, tanah, udara, dan analisis data lingkungan."
 
-  - title: "Penerjemahan & Penulisan"
-    icon: translate
-    desc: "Penerjemahan dokumen, penyuntingan teks, penulisan deskripsi ilmiah, dan penyusunan konten yang mudah dipahami."
-    image: "images/skills/penerjemahan.jpg"
-    tags: ["EN ↔ ID", "Editing", "Content Writing"]
+  - title: "Riset & Publikasi"
+    icon: file-search
+    desc: "Penelitian ilmiah, pengolahan data, penulisan laporan dan artikel jurnal."
 
-  - title: "Desain Materi & Presentasi"
-    icon: pen
-    desc: "Poster, brosur, video, modul praktikum, sertifikat, dan desain materi edukasi yang informatif dan menarik."
-    image: "images/skills/desain.jpg"
-    tags: ["Canva", "Adobe", "Visual Communication"]
-
-  - title: "Analisis Data & Database"
-    icon: database
-    desc: "Pengelolaan data survei dan database publikasi, tabulasi, visualisasi data, serta penyusunan laporan."
-    image: "images/skills/data.jpg"
-    tags: ["Excel", "R", "SPSS"]
-
-  - title: "Manajemen Proyek & Kolaborasi"
-    icon: kanban
-    desc: "Perencanaan, koordinasi tim, penyusunan laporan, dan komunikasi dengan berbagai pihak untuk mencapai tujuan proyek."
-    image: "images/skills/proyek.jpg"
-    tags: ["Google Workspace", "Notion", "Teamwork"]
-
-  # Contoh keahlian ke-7 (muncul di halaman slide berikutnya). Ubah atau hapus sesuai kebutuhan.
-  - title: "Keahlian Baru"
-    icon: chart
-    desc: "Tulis deskripsi singkat keahlian ini, apa yang kamu kerjakan, dan hasil yang bisa ditunjukkan."
-    tags: ["Tag 1", "Tag 2", "Tag 3"]
+  - title: "Digital Marketing"
+    icon: growth
+    desc: "Strategi pemasaran digital, analisis pasar, pembuatan konten, dan optimasi kampanye."

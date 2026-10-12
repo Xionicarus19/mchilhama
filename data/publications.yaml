@@ -1,0 +1,10 @@
+# Penelitian Terbaru: yang tampil hanya publikasi PERTAMA di daftar ini.
+# image : foto potret (rasio 3:4, mis. 900x1200). Taruh di static/images/publikasi/.
+# link  : URL artikel (mis. DOI). Kalau kosong, tombol "Baca Selengkapnya" disembunyikan.
+items:
+  - title: "Characteristics of microplastics and comparison of estimated daily intake levels (EDI) in consumption shells in Kenjeran and Balekambang"
+    venue: "BIO Web of Conferences"
+    year: "2025"
+    desc: "Menganalisis karakteristik mikroplastik dan membandingkan nilai EDI pada kerang konsumsi di Selat Madura dan Pantai Selatan Jawa Timur."
+    image: "images/publikasi/mikroplastik.jpg"
+    link: ""
