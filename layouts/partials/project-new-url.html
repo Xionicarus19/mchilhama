@@ -1,0 +1,28 @@
+{{- /*
+  Membuat tautan "buat file baru" di GitHub dengan isi awal (front matter) sebuah proyek.
+  Pakai:  {{ partial "project-new-url.html" (dict "repo" "pemilik/repo" "branch" "main" "category" "Riset" "icon" "flask") }}
+  Mengembalikan teks URL (category dan icon boleh dikosongkan).
+*/ -}}
+{{- $tpl := printf `---
+title: "Judul Proyek"
+weight: 10
+category: "%s"
+icon: %s   # pilihan ikon: lihat partials/icon.html
+image: "images/proyek/nama-file.jpg"   # unggah fotonya ke static/images/proyek/
+labels: ["Label 1", "Label 2"]
+summary: "Ringkasan singkat yang tampil di kartu."
+---
+
+## Gambaran umum
+
+(Isi dengan latar belakang dan tujuan proyek ini.)
+
+## Peran saya
+
+(Isi dengan tugas dan tanggung jawabmu di proyek ini.)
+
+## Hasil
+
+(Isi dengan hasil atau capaian yang bisa ditunjukkan.)
+` (.category | default "") (.icon | default "chart") -}}
+{{- return (printf "https://github.com/%s/new/%s?filename=%s&value=%s" .repo .branch (urlquery "content/projects/proyek-baru.md") (urlquery $tpl)) -}}

@@ -1,6 +1,23 @@
-<footer class="site-footer">
-  <div class="wrap">
-    <p>&copy; {{ now.Year }} {{ site.Params.heroName }}. </p>
-    {{ partial "socials.html" . }}
+{{- /*
+  Footer halaman dalam: hak cipta di kiri, ikon LinkedIn / GitHub / Instagram / Email di kanan.
+  Tautan diambil dari [params] di hugo.toml (linkedin, github, instagram, email); yang kosong tidak tampil.
+  Di beranda footer ini disembunyikan karena beranda punya footer sendiri (lihat home-contact.html).
+*/ -}}
+<link rel="stylesheet" href="{{ "css/site-footer.css" | relURL }}">
+{{- $links := slice -}}
+{{- with site.Params.linkedin }}{{ $links = $links | append (dict "label" "LinkedIn" "icon" "linkedin" "href" .) }}{{ end -}}
+{{- with site.Params.github }}{{ $links = $links | append (dict "label" "GitHub" "icon" "github" "href" .) }}{{ end -}}
+{{- with site.Params.instagram }}{{ $links = $links | append (dict "label" "Instagram" "icon" "instagram" "href" .) }}{{ end -}}
+{{- with site.Params.email }}{{ $links = $links | append (dict "label" "Email" "icon" "mail" "href" (printf "mailto:%s" .)) }}{{ end }}
+<footer class="site-footer sf2">
+  <div class="wrap sf2-row">
+    <p class="sf2-copy">&copy; {{ now.Year }} {{ default site.Title site.Params.heroName }}.</p>
+    {{ if $links }}
+    <ul class="sf2-links" aria-label="Tautan sosial">
+      {{ range $links }}
+      <li><a href="{{ .href }}" aria-label="{{ .label }}"{{ if hasPrefix .href "http" }} target="_blank" rel="noopener"{{ end }}>{{ partial "icon.html" .icon }}</a></li>
+      {{ end }}
+    </ul>
+    {{ end }}
   </div>
 </footer>

@@ -13,6 +13,8 @@
   Judul dan pengantar bisa diubah di content/projects/_index.md lewat "heading" dan "lead".
 */ -}}
 {{ define "main" }}
+{{- $repo := site.Params.githubRepo | default "Xionicarus19/mchilhama" -}}
+{{- $branch := site.Params.githubBranch | default "main" -}}
 {{- $items := slice -}}
 {{- range .Pages.ByWeight -}}
   {{- if .Params.category }}{{ $items = $items | append . }}{{ end -}}
@@ -33,9 +35,15 @@
 <section class="pj">
   <div class="wrap">
     <header class="pj-head">
-      <p class="pj-kicker">Portofolio</p>
-      <h1 class="pj-title">{{ .Params.heading | default "Karya & Proyek" }}</h1>
-      <p class="pj-lead">{{ .Params.lead | default "Beberapa proyek dan pengalaman yang pernah saya kerjakan dalam bidang lingkungan, penelitian, dan digital marketing." }}</p>
+      <div class="pj-head__text">
+        <p class="pj-kicker">Portofolio</p>
+        <h1 class="pj-title">{{ .Params.heading | default "Karya & Proyek" }}</h1>
+        <p class="pj-lead">{{ .Params.lead | default "Beberapa proyek dan pengalaman yang pernah saya kerjakan dalam bidang lingkungan, penelitian, dan digital marketing." }}</p>
+      </div>
+      <div class="pj-head__add" data-pj-admin hidden>
+        <button type="button" class="pj-addbtn" data-pj-open><span class="pj-addbtn__plus" aria-hidden="true">{{ partial "icon.html" "plus" }}</span>Tambah Karya Baru</button>
+        <p>Isi formulir singkat, lalu simpan sebagai halaman baru di GitHub.</p>
+      </div>
     </header>
 
     {{ if $items }}
@@ -67,12 +75,52 @@
         </div>
       </article>
       {{ end }}
+
+      <div class="pj-add" data-pj-admin hidden>
+        <span class="pj-add__icon" aria-hidden="true">{{ partial "icon.html" "plus-circle" }}</span>
+        <h2 class="pj-add__title">Tambah Karya Baru</h2>
+        <p class="pj-add__text">Punya proyek atau karya baru? Tambahkan ke portofolio dalam beberapa menit.</p>
+        <button type="button" class="pj-addbtn" data-pj-open><span class="pj-addbtn__plus" aria-hidden="true">{{ partial "icon.html" "plus" }}</span>Mulai</button>
+        {{ if $cats }}
+        <ul class="pj-add__cats" aria-label="Tambah langsung ke kategori">
+          {{ range $cats }}
+          <li><a class="pj-addchip" href="{{ partial "project-new-url.html" (dict "repo" $repo "branch" $branch "category" . "icon" (index $catIcon .)) }}" target="_blank" rel="noopener"><span class="pj-chip__ico" aria-hidden="true">{{ partial "icon.html" (index $catIcon .) }}</span>{{ . }}</a></li>
+          {{ end }}
+        </ul>
+        {{ end }}
+      </div>
     </div>
     {{ else }}
     <p class="pj-empty">Belum ada proyek. Buat halaman di <code>content/projects/</code> dan isi <code>category</code> di front matter-nya agar tampil di sini.</p>
     {{ end }}
   </div>
+
+<dialog class="pj-dlg" data-pj-dialog aria-labelledby="pj-dlg-title" data-repo="{{ $repo }}" data-branch="{{ $branch }}" data-show="{{ site.Params.showAddProject }}">
+  <form method="dialog" class="pj-dlg__form" data-pj-form>
+    <div class="pj-dlg__head">
+      <h2 id="pj-dlg-title">Tambah Karya Baru</h2>
+      <button type="button" class="pj-dlg__x" data-pj-close aria-label="Tutup">&times;</button>
+    </div>
+    <label>Judul proyek<input name="title" required placeholder="mis. Survei Burung Pesisir"></label>
+    <div class="pj-dlg__row">
+      <label>Kategori<input name="category" list="pj-cats" required placeholder="pilih atau ketik baru">
+        <datalist id="pj-cats">{{ range $cats }}<option value="{{ . }}">{{ end }}</datalist></label>
+      <label>Ikon<select name="icon"><option value="eco">eco</option><option value="leaf">leaf</option><option value="sprout">sprout</option><option value="droplets">droplets</option><option value="file-search">file-search</option><option value="file-text">file-text</option><option value="growth">growth</option><option value="megaphone">megaphone</option><option value="flask">flask</option><option value="flask-round">flask-round</option><option value="graduation">graduation</option><option value="briefcase">briefcase</option><option value="microscope">microscope</option><option value="translate">translate</option><option value="pen">pen</option><option value="database">database</option><option value="kanban">kanban</option><option value="chart">chart</option><option value="code">code</option><option value="camera">camera</option><option value="book">book</option></select></label>
+    </div>
+    <label>Label (pisahkan dengan koma)<input name="labels" placeholder="Survei Lapangan, Laporan"></label>
+    <label>Ringkasan di kartu<textarea name="summary" rows="3" placeholder="Satu atau dua kalimat."></textarea></label>
+    <label>Nama file foto <small>(unggah ke static/images/proyek/)</small><input name="image" placeholder="nama-file.jpg"></label>
+    <label>Urutan <small>(kecil tampil dulu)</small><input name="weight" type="number" value="10" min="1"></label>
+    <div class="pj-dlg__actions">
+      <a class="pj-dlg__go" data-pj-github target="_blank" rel="noopener">1. Buat halaman di GitHub</a>
+      <a class="pj-dlg__alt" data-pj-upload target="_blank" rel="noopener">2. Unggah foto</a>
+      <button type="button" class="pj-dlg__alt" data-pj-copy>Salin teks</button>
+    </div>
+    <p class="pj-dlg__hint">Di komputer sendiri: <code data-pj-cmd>hugo new projects/nama-proyek.md</code>. Setelah disimpan (commit), situs akan diperbarui otomatis.</p>
+  </form>
+</dialog>
 </section>
 
+<script src="{{ "js/projects-add.js" | relURL }}" defer></script>
 <script src="{{ "js/projects-filter.js" | relURL }}" defer></script>
 {{ end }}

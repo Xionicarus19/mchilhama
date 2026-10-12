@@ -86,7 +86,8 @@
 
 {{/* ===================== RIWAYAT PERJALANAN + PENELITIAN TERBARU ===================== */}}
 {{ $timeline := site.Data.timeline.items }}
-{{ $pubs := site.Data.publications.items }}
+{{/* Urutkan publikasi dari tahun terbaru; yang tampil di beranda = tahun paling baru */}}
+{{ $pubs := sort site.Data.publications.items "year" "desc" }}
 {{ if or $timeline $pubs }}
 <section class="hs" id="pengalaman" aria-label="Pengalaman, pendidikan, dan publikasi">
   <div class="wrap">

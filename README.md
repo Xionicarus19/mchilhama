@@ -16,6 +16,12 @@ YAML di folder `data/`, jadi menambah atau mengubah isi tidak perlu menyentuh HT
    | `layouts/projects/list.html`          | `layouts/projects/list.html` (halaman Karya) |
    | `static/css/projects-page.css`        | `static/css/projects-page.css`             |
    | `static/js/projects-filter.js`        | `static/js/projects-filter.js`             |
+   | `static/js/projects-add.js`           | `static/js/projects-add.js` (tombol Tambah Karya Baru) |
+   | `layouts/partials/footer.html`        | `layouts/partials/footer.html` (footer halaman dalam; timpa yang lama) |
+   | `layouts/partials/project-new-url.html` | `layouts/partials/project-new-url.html` |
+   | `layouts/partials/icon.html`          | `layouts/partials/icon.html` (timpa; ada ikon baru) |
+   | `static/css/site-footer.css`          | `static/css/site-footer.css`               |
+   | `archetypes/projects.md`              | `archetypes/projects.md`                   |
    | `content/projects/*.md` (5 contoh)    | `content/projects/` (lihat bagian Halaman Karya) |
    | `static/css/home-sections.css`        | `static/css/home-sections.css`             |
    | `static/js/skills-slider.js`          | `static/js/skills-slider.js`               |
@@ -89,3 +95,33 @@ summary: "Ringkasan singkat di kartu."
   `heading: "Karya & Proyek"` dan `lead: "..."`.
 - Chip filter hanya muncul kalau ada lebih dari satu kategori. Tautan langsung ke satu kategori
   juga bisa, mis. `/projects/#riset`.
+
+
+## Menambah karya baru (tombol "Tambah Karya Baru")
+
+Di halaman `/projects/` ada tombol **Tambah Karya Baru** (di kanan judul) dan kartu putus-putus di akhir daftar.
+Tombol ini tersembunyi untuk pengunjung biasa dan tampil jika:
+
+- kamu membuka situs lewat `localhost` (saat `hugo server`), atau
+- kamu membuka sekali `https://xionicarus19.github.io/mchilhama/projects/?tambah=1` (diingat di browser itu; `?tambah=0` untuk menyembunyikan lagi), atau
+- `hugo.toml` berisi `showAddProject = true` di `[params]` (tampil untuk semua orang, tidak disarankan).
+
+Cara pakai: klik tombol, isi judul, kategori, ikon, label, ringkasan, nama file foto, lalu:
+
+1. **Buat halaman di GitHub**: membuka GitHub dengan file `content/projects/<judul>.md` yang sudah terisi. Tekan *Commit changes*.
+2. **Unggah foto**: membuka halaman unggah ke `static/images/proyek/`. Nama file harus sama dengan yang kamu isi.
+3. Tunggu 1-2 menit sampai situs ter-deploy. Kartu baru muncul otomatis, dan kategori baru otomatis menjadi chip filter.
+
+Alternatif di komputer sendiri: `hugo new projects/nama-proyek.md` (memakai `archetypes/projects.md`), isi, lalu push.
+Kategori yang sudah ada juga punya tombol cepat di kartu putus-putus. Repo dan branch default: `Xionicarus19/mchilhama` dan `main`;
+ubah lewat `githubRepo` dan `githubBranch` di `[params]` bila perlu.
+
+## Footer halaman dalam
+
+`footer.html`: hak cipta di kiri, ikon LinkedIn / GitHub / Instagram / Email di kanan, diambil dari `hugo.toml`.
+LinkedIn belum tampil karena `linkedin = ""`; isi URL-nya agar ikonnya muncul.
+
+## Publikasi (otomatis terbaru)
+
+Di `data/publications.yaml`, tambahkan item baru di bagian mana saja dengan `year` terisi.
+Beranda otomatis menampilkan publikasi dengan tahun paling baru di "Penelitian Terbaru".
