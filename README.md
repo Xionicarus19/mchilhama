@@ -195,3 +195,26 @@ Artikel yang sangat panjang tidak muat di tautan; pakai "Salin teks" lalu tempel
 
 **Berlangganan**: situs ini statis, jadi tidak ada server yang menyimpan email. Secara bawaan tombolnya membuka email ke alamat di `hugo.toml`.
 Untuk daftar langganan sungguhan, buat form di layanan seperti Buttondown atau Formspree, lalu isi `newsletterAction = "https://...."` di `[params]`.
+
+
+## Sertifikat Terbaru (halaman Tentang)
+
+Pasang: `layouts/_default/about.html` (timpa), `static/css/about.css` (timpa), `static/js/about.js`, `content/about.md` (timpa, atau cukup hapus bagian "Sertifikasi" dari `details`),
+`layouts/partials/icon.html` (timpa), `archetypes/certificates.md`, dan folder `content/certificates/`.
+
+Setiap sertifikat = satu file di `content/certificates/`:
+
+```
+---
+title: "Basic Offshore Safety Training"
+issuer: "Penerbit"
+date: 2025-03-01            # tanggal terbit; yang terbaru tampil paling atas
+image: "images/sertifikat/nama.jpg"   # opsional, taruh di static/images/sertifikat/
+link: "https://..."         # opsional, tautan kredensial
+---
+```
+
+- Yang punya `date` tampil urut dari terbaru, yang belum diberi tanggal tampil setelahnya (urut `weight`).
+- Awalnya 4 sertifikat tampil; sisanya di balik tombol "Lihat semua sertifikat". Ubah jumlahnya lewat `show:` di `content/certificates/_index.md`.
+- **Lima sertifikat lamamu sudah dibuatkan filenya, tetapi tanggal dan penerbitnya kosong.** Buka tiap file, isi `issuer`, dan hapus tanda `#` di baris `date`.
+- Tombol **Tambah Sertifikat** (di kanan judul) hanya untuk pemilik (localhost, `/about/?tambah=1`, atau `showAddProject = true`). Formulirnya membuat file baru di GitHub yang sudah terisi, tinggal Commit; ada juga tombol unggah gambar.

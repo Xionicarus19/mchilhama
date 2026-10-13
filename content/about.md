@@ -26,12 +26,10 @@ skills:
   - { name: "Konservasi Tanaman", icon: "sprout" }
   - { name: "Digital Marketing & Marketplace", icon: "megaphone" }
 
-# Blok tambahan di bawah keahlian (boleh dihapus / ditambah)
+# Blok tambahan di bawah sertifikat (boleh dihapus / ditambah). Sertifikat sendiri ada di content/certificates/
 details:
   - title: "Pendidikan"
     items: ["S1 Biologi, Institut Teknologi Sepuluh Nopember (2021-2025)", "SMAN 4 Kediri, IPA"]
-  - title: "Sertifikasi"
-    items: ["Basic Offshore Safety Training (Sea Survival)", "Sensus Burung Pantai Migran", "PKTI-TD", "Canva", "Essential Skills: Social Influence"]
   - title: "Penghargaan"
     items: ["Best Staff of Department Entrepreneurship (dua periode)"]
   - title: "Bahasa"

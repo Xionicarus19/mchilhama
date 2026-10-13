@@ -4,6 +4,9 @@
   Tautan sosial diambil dari hugo.toml (linkedin, instagram, github, email).
 */ -}}
 {{ define "main" }}
+{{- $repo := site.Params.githubRepo | default "Xionicarus19/mchilhama" -}}
+{{- $branch := site.Params.githubBranch | default "main" -}}
+{{- $mn := slice "Jan" "Feb" "Mar" "Apr" "Mei" "Jun" "Jul" "Agu" "Sep" "Okt" "Nov" "Des" -}}
 <link rel="stylesheet" href="{{ "css/about.css" | relURL }}">
 {{- $photo := .Params.photo | default site.Params.heroPhoto -}}
 <section class="ab-hero">
@@ -58,6 +61,64 @@
       </section>
       {{ end }}
 
+      {{ with site.GetPage "certificates" }}
+      {{- /* yang punya tanggal: terbaru dulu; yang belum bernilai tanggal: setelahnya, urut weight */ -}}
+      {{- $all := slice -}}
+      {{- range (where .Pages "Params.date" "!=" nil).ByDate.Reverse }}{{ $all = $all | append . }}{{ end -}}
+      {{- range (where .Pages "Params.date" "==" nil).ByWeight }}{{ $all = $all | append . }}{{ end -}}
+      {{- $show := int (.Params.show | default 4) -}}
+      <section class="ab-block ab-block--line" id="sertifikat">
+        <div class="ab-certhead">
+          <h2 class="ab-h"><span class="ab-h__ico" aria-hidden="true">{{ partial "icon.html" "award" }}</span>{{ .Params.heading | default "Sertifikat Terbaru" }}</h2>
+          <button type="button" class="ab-addbtn" data-ab-open data-ab-admin hidden><span aria-hidden="true">{{ partial "icon.html" "plus" }}</span>Tambah Sertifikat</button>
+        </div>
+        {{ if $all }}
+        <ul class="ab-certs" data-ab-certs data-show="{{ $show }}">
+          {{ range $all }}
+          <li class="ab-cert">
+            <span class="ab-cert__media{{ if not .Params.image }} is-empty{{ end }}">
+              {{ with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+              <span class="ab-cert__fb" aria-hidden="true">{{ partial "icon.html" "award" }}</span>
+            </span>
+            <div class="ab-cert__text">
+              <h3>{{ .Title }}</h3>
+              {{ with .Params.issuer }}<p class="ab-cert__issuer">{{ . }}</p>{{ end }}
+              {{ if .Params.date }}<p class="ab-cert__date"><span class="ab-ico" aria-hidden="true">{{ partial "icon.html" "calendar" }}</span>{{ index $mn (sub (int (.Date.Format "1")) 1) }} {{ .Date.Year }}</p>{{ end }}
+              {{ with .Params.link }}<a class="ab-cert__link" href="{{ . }}" target="_blank" rel="noopener">Lihat kredensial <span aria-hidden="true">&nearr;</span></a>{{ end }}
+            </div>
+          </li>
+          {{ end }}
+        </ul>
+        {{ if gt (len $all) $show }}<button type="button" class="ab-certmore" data-ab-more hidden>Lihat semua sertifikat ({{ len $all }})</button>{{ end }}
+        {{ else }}
+        <p class="ab-certnone">Belum ada sertifikat. Buat file di <code>content/certificates/</code>.</p>
+        {{ end }}
+      </section>
+
+      <dialog class="ab-dlg" data-ab-dialog aria-labelledby="ab-dlg-title" data-repo="{{ $repo }}" data-branch="{{ $branch }}" data-show="{{ site.Params.showAddProject }}">
+        <form method="dialog" class="ab-dlg__form" data-ab-form>
+          <div class="ab-dlg__head">
+            <h2 id="ab-dlg-title">Tambah sertifikat</h2>
+            <button type="button" class="ab-dlg__x" data-ab-close aria-label="Tutup">&times;</button>
+          </div>
+          <label>Nama sertifikat<input name="title" required placeholder="mis. Basic Offshore Safety Training"></label>
+          <div class="ab-dlg__row">
+            <label>Penerbit<input name="issuer" required placeholder="mis. BNSP / Kemenristek"></label>
+            <label>Bulan terbit<input name="date" type="month" required></label>
+          </div>
+          <label>Tautan kredensial <small>(opsional)</small><input name="link" type="url" placeholder="https://..."></label>
+          <label>Nama file gambar <small>(opsional, unggah ke static/images/sertifikat/)</small><input name="image" placeholder="nama-file.jpg"></label>
+          <label>Keterangan <small>(opsional)</small><textarea name="body" rows="3"></textarea></label>
+          <div class="ab-dlg__actions">
+            <a class="ab-dlg__go" data-ab-github target="_blank" rel="noopener">1. Buat sertifikat di GitHub</a>
+            <a class="ab-dlg__alt" data-ab-upload target="_blank" rel="noopener">2. Unggah gambar</a>
+            <button type="button" class="ab-dlg__alt" data-ab-copy>Salin teks</button>
+          </div>
+          <p class="ab-dlg__hint">Di komputer sendiri: <code data-ab-cmd>hugo new certificates/nama.md</code>. Setelah di-commit, situs diperbarui otomatis.</p>
+        </form>
+      </dialog>
+      {{ end }}
+
       {{ with .Params.details }}
       <section class="ab-block ab-block--line">
         <div class="ab-details">
@@ -74,4 +135,5 @@
     </div>
   </div>
 </section>
+<script src="{{ "js/about.js" | relURL }}" defer></script>
 {{ end }}
