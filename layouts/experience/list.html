@@ -1,0 +1,130 @@
+{{- /*
+  Halaman Pengalaman gaya LinkedIn. Setiap entri = satu file di content/experience/.
+  Front matter: title (jabatan), company, type, logo, start ("2026-07"), end ("" = sekarang),
+  location, mode, skills [], media [], group (opsional, default "Pengalaman"). Isi file = deskripsi (daftar poin).
+  Judul, pengantar, dan urutan kelompok: content/experience/_index.md
+*/ -}}
+{{ define "main" }}
+{{- $repo := site.Params.githubRepo | default "Xionicarus19/mchilhama" -}}
+{{- $branch := site.Params.githubBranch | default "main" -}}
+{{- $mn := slice "Jan" "Feb" "Mar" "Apr" "Mei" "Jun" "Jul" "Agu" "Sep" "Okt" "Nov" "Des" -}}
+
+{{- $rows := slice -}}
+{{- range .Pages -}}
+  {{- $d := partial "ym.html" .Params.start -}}
+  {{- if $d.ok }}{{ $rows = $rows | append (dict "p" . "k" $d.key) }}{{ end -}}
+{{- end -}}
+{{- $entries := slice -}}
+{{- range sort $rows "k" "desc" }}{{ $entries = $entries | append .p }}{{ end -}}
+
+{{- $groups := slice -}}
+{{- range .Params.groups }}{{ $groups = $groups | append . }}{{ end -}}
+{{- range $entries -}}
+  {{- $g := .Params.group | default "Pengalaman" -}}
+  {{- if not (in $groups $g) }}{{ $groups = $groups | append $g }}{{ end -}}
+{{- end -}}
+
+<link rel="stylesheet" href="{{ "css/experience.css" | relURL }}">
+
+<section class="xp">
+  <div class="wrap">
+    <header class="xp-head">
+      <div>
+        <p class="xp-kicker">{{ .Title }}</p>
+        <h1 class="xp-title">{{ .Params.heading | default .Title }}</h1>
+        <p class="xp-lead">{{ .Params.lead }}</p>
+      </div>
+      <div class="xp-tools" data-xp-admin hidden>
+        <button type="button" class="xp-icobtn" data-xp-open aria-label="Tambah pengalaman" title="Tambah pengalaman">{{ partial "icon.html" "plus" }}</button>
+        <a class="xp-icobtn" href="https://github.com/{{ $repo }}/tree/{{ $branch }}/content/experience" target="_blank" rel="noopener" aria-label="Kelola entri di GitHub" title="Kelola entri di GitHub">{{ partial "icon.html" "pencil" }}</a>
+      </div>
+    </header>
+
+    {{ range $groups }}
+    {{ $group := . }}
+    <div class="xp-group">
+      {{ if gt (len $groups) 1 }}<h2 class="xp-gtitle">{{ $group }}</h2>{{ end }}
+      <ul class="xp-list">
+        {{ range $entries }}{{ if eq (.Params.group | default "Pengalaman") $group }}
+        {{- $s := partial "ym.html" .Params.start -}}
+        {{- $e := partial "ym.html" .Params.end -}}
+        {{- $ey := now.Year -}}{{- $em := int (now.Format "1") -}}
+        {{- if $e.ok }}{{ $ey = $e.y }}{{ $em = $e.m }}{{ end -}}
+        {{- $months := add (add (mul (sub $ey $s.y) 12) (sub $em $s.m)) 1 -}}
+        {{- if lt $months 1 }}{{ $months = 1 }}{{ end -}}
+        {{- $y := div $months 12 -}}{{- $m := mod $months 12 -}}
+        {{- $dur := slice -}}
+        {{- if gt $y 0 }}{{ $dur = $dur | append (printf "%d thn" $y) }}{{ end -}}
+        {{- if gt $m 0 }}{{ $dur = $dur | append (printf "%d bln" $m) }}{{ end -}}
+        {{- $skills := .Params.skills | default slice -}}
+        {{- if not (reflect.IsSlice $skills) }}{{ $skills = split (string $skills) "," }}{{ end -}}
+        {{- $media := .Params.media | default slice -}}
+        {{- if not (reflect.IsSlice $media) }}{{ $media = slice $media }}{{ end -}}
+        <li class="xp-item">
+          <div class="xp-logo{{ if not .Params.logo }} is-empty{{ end }}">
+            {{ with .Params.logo }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+            <span class="xp-logo__fb" aria-hidden="true">{{ partial "icon.html" "briefcase" }}</span>
+          </div>
+          <div class="xp-main">
+            <h3 class="xp-role">{{ .Title }}</h3>
+            <p class="xp-co">{{ .Params.company }}{{ with .Params.type }}<i aria-hidden="true">·</i>{{ . }}{{ end }}</p>
+            <p class="xp-meta"><span class="xp-ico" aria-hidden="true">{{ partial "icon.html" "calendar" }}</span>{{ index $mn (sub $s.m 1) }} {{ $s.y }} – {{ if $e.ok }}{{ index $mn (sub $e.m 1) }} {{ $e.y }}{{ else }}Sekarang{{ end }} <i aria-hidden="true">·</i> {{ delimit $dur " " }}</p>
+            {{ if or .Params.location .Params.mode }}
+            <p class="xp-meta"><span class="xp-ico" aria-hidden="true">{{ partial "icon.html" "map-pin" }}</span>{{ .Params.location }}{{ if and .Params.location .Params.mode }} <i aria-hidden="true">·</i> {{ end }}{{ .Params.mode }}</p>
+            {{ end }}
+            {{ with .Content }}
+            <div class="xp-desc" data-xp-desc>{{ . }}</div>
+            <button type="button" class="xp-more" data-xp-more hidden>selengkapnya</button>
+            {{ end }}
+            {{ with $media }}
+            <ul class="xp-media">
+              {{ range . }}<li><a href="{{ . | relURL }}" target="_blank" rel="noopener"><img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.closest('li').remove()"></a></li>{{ end }}
+            </ul>
+            {{ end }}
+            {{ if $skills }}
+            <p class="xp-skills"><span class="xp-ico" aria-hidden="true">{{ partial "icon.html" "diamond" }}</span><strong>{{ delimit (first 2 $skills) ", " }}</strong>{{ if gt (len $skills) 2 }} <span>dan +{{ sub (len $skills) 2 }} keahlian</span>{{ end }}</p>
+            {{ end }}
+          </div>
+          <a class="xp-icobtn xp-edit" data-xp-admin hidden href="https://github.com/{{ $repo }}/edit/{{ $branch }}/content/{{ .File.Path | replaceRE `\\` "/" }}" target="_blank" rel="noopener" aria-label="Ubah {{ .Title }}" title="Ubah di GitHub">{{ partial "icon.html" "pencil" }}</a>
+        </li>
+        {{ end }}{{ end }}
+      </ul>
+    </div>
+    {{ else }}
+    <p class="xp-empty">Belum ada entri. Buat file di <code>content/experience/</code> dengan <code>start</code> di front matter-nya.</p>
+    {{ end }}
+  </div>
+
+  <dialog class="xp-dlg" data-xp-dialog aria-labelledby="xp-dlg-title" data-repo="{{ $repo }}" data-branch="{{ $branch }}" data-show="{{ site.Params.showAddProject }}">
+    <form method="dialog" class="xp-dlg__form" data-xp-form>
+      <div class="xp-dlg__head">
+        <h2 id="xp-dlg-title">Tambah pengalaman</h2>
+        <button type="button" class="xp-dlg__x" data-xp-close aria-label="Tutup">&times;</button>
+      </div>
+      <label>Jabatan<input name="title" required placeholder="mis. Biodiversity Surveyor"></label>
+      <div class="xp-dlg__row">
+        <label>Perusahaan / instansi<input name="company" required></label>
+        <label>Jenis pekerjaan<select name="type"><option value="">(tidak diisi)</option><option>Penuh waktu</option><option>Paruh waktu</option><option>Magang</option><option>Kontrak</option><option>Freelance</option><option>Sukarela</option></select></label>
+      </div>
+      <div class="xp-dlg__row">
+        <label>Mulai<input name="start" type="month" required></label>
+        <label>Selesai <small>(kosong = sekarang)</small><input name="end" type="month"></label>
+      </div>
+      <div class="xp-dlg__row">
+        <label>Lokasi<input name="location" placeholder="Surabaya, Jawa Timur, Indonesia"></label>
+        <label>Model kerja<select name="mode"><option value="">(tidak diisi)</option><option>Di tempat</option><option>Hybrid</option><option>Remote</option><option>Lapangan</option></select></label>
+      </div>
+      <label>Deskripsi <small>(satu poin per baris)</small><textarea name="desc" rows="4"></textarea></label>
+      <label>Keahlian <small>(pisahkan dengan koma)</small><input name="skills" placeholder="Marketing, Riset"></label>
+      <label>Nama file logo <small>(unggah ke static/images/logo/)</small><input name="logo" placeholder="nama-file.png"></label>
+      <div class="xp-dlg__actions">
+        <a class="xp-dlg__go" data-xp-github target="_blank" rel="noopener">1. Buat halaman di GitHub</a>
+        <a class="xp-dlg__alt" data-xp-upload target="_blank" rel="noopener">2. Unggah logo</a>
+        <button type="button" class="xp-dlg__alt" data-xp-copy>Salin teks</button>
+      </div>
+      <p class="xp-dlg__hint">Di komputer sendiri: <code data-xp-cmd>hugo new experience/nama.md</code>. Setelah di-commit, situs diperbarui otomatis.</p>
+    </form>
+  </dialog>
+</section>
+<script src="{{ "js/experience.js" | relURL }}" defer></script>
+{{ end }}

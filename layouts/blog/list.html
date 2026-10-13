@@ -1,0 +1,151 @@
+{{- /*
+  Halaman Blog: filter kategori + pencarian, kartu 2 kolom, sidebar (Kategori, Artikel Terbaru, Berlangganan).
+  Setiap artikel = satu file di content/blog/. Front matter yang dipakai:
+    title, date, categories ["Nama Kategori"] (yang pertama dipakai), image "images/blog/nama.jpg", summary
+  Judul, pengantar, dan kutipan: content/blog/_index.md (heading, accent, lead, quote, banner)
+*/ -}}
+{{ define "main" }}
+{{- $repo := site.Params.githubRepo | default "Xionicarus19/mchilhama" -}}
+{{- $branch := site.Params.githubBranch | default "main" -}}
+{{- $months := slice "Januari" "Februari" "Maret" "April" "Mei" "Juni" "Juli" "Agustus" "September" "Oktober" "November" "Desember" -}}
+{{- $posts := .Pages.ByDate.Reverse -}}
+
+{{- $cats := slice -}}
+{{- $counts := dict -}}
+{{- range $posts -}}
+  {{- $c := index (.Params.categories | default (slice "Umum")) 0 -}}
+  {{- if not (in $cats $c) }}{{ $cats = $cats | append $c }}{{ end -}}
+  {{- $counts = merge $counts (dict $c (add 1 (index $counts $c | default 0))) -}}
+{{- end -}}
+
+<link rel="stylesheet" href="{{ "css/blog.css" | relURL }}">
+
+<section class="bl-hero"{{ with .Params.banner }} style="--bl-banner:url('{{ . | relURL }}')"{{ end }}>
+  <div class="wrap bl-hero__in">
+    <div class="bl-hero__text">
+      <p class="bl-kicker">{{ .Title }}</p>
+      <h1 class="bl-title">{{ .Params.heading | default .Title }}{{ with .Params.accent }} <span>{{ . }}</span>{{ end }}</h1>
+      {{ with .Params.lead }}<p class="bl-lead">{{ . }}</p>{{ end }}
+    </div>
+    {{ with .Params.quote }}
+    <blockquote class="bl-quote"><span class="bl-quote__ico" aria-hidden="true">{{ partial "icon.html" "leaf" }}</span><p>&ldquo;{{ . }}&rdquo;</p></blockquote>
+    {{ end }}
+  </div>
+</section>
+
+<section class="bl">
+  <div class="wrap">
+    <div class="bl-toolbar">
+      <ul class="bl-chips" data-bl-filter aria-label="Filter kategori">
+        <li><button type="button" class="bl-chip" data-filter="all" aria-pressed="true">Semua</button></li>
+        {{ range $cats }}<li><button type="button" class="bl-chip" data-filter="{{ . | urlize }}" aria-pressed="false">{{ . }}</button></li>{{ end }}
+      </ul>
+      <label class="bl-search"><span class="bl-search__ico" aria-hidden="true">{{ partial "icon.html" "search" }}</span><input type="search" data-bl-search placeholder="Cari artikel..." aria-label="Cari artikel"></label>
+      <div class="bl-admin" data-bl-admin hidden>
+        <button type="button" class="bl-addbtn" data-bl-open><span aria-hidden="true">{{ partial "icon.html" "plus" }}</span>Tulis Artikel Baru</button>
+      </div>
+    </div>
+
+    <div class="bl-layout">
+      <div class="bl-main">
+        {{ if $posts }}
+        <div class="bl-grid" data-bl-grid>
+          {{ range $posts }}
+          {{ $cat := index (.Params.categories | default (slice "Umum")) 0 }}
+          <article class="bl-card" data-cat="{{ $cat | urlize }}" data-text="{{ printf "%s %s" .Title (.Summary | plainify) | lower }}">
+            <div class="bl-media{{ if not .Params.image }} is-empty{{ end }}">
+              {{ with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+              <span class="bl-media__fb" aria-hidden="true">{{ partial "icon.html" "leaf" }}</span>
+              <span class="bl-badge">{{ $cat }}</span>
+            </div>
+            <div class="bl-body">
+              <h2 class="bl-name"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+              <p class="bl-desc">{{ .Params.summary | default (.Summary | plainify) | truncate 170 }}</p>
+              <div class="bl-foot">
+                <span class="bl-meta"><span class="bl-ico" aria-hidden="true">{{ partial "icon.html" "calendar" }}</span>{{ .Date.Format "2" }} {{ index $months (sub (int (.Date.Format "1")) 1) }} {{ .Date.Year }}</span>
+                <span class="bl-meta"><span class="bl-ico" aria-hidden="true">{{ partial "icon.html" "clock" }}</span>{{ math.Max 1 .ReadingTime }} menit baca</span>
+                <span class="bl-more">Baca selengkapnya <span aria-hidden="true">&rarr;</span></span>
+              </div>
+            </div>
+          </article>
+          {{ end }}
+          <div class="bl-add" data-bl-admin hidden>
+            <span class="bl-add__icon" aria-hidden="true">{{ partial "icon.html" "plus-circle" }}</span>
+            <h2>Tulis Artikel Baru</h2>
+            <p>Punya cerita atau wawasan baru? Tambahkan sebagai artikel.</p>
+            <button type="button" class="bl-addbtn" data-bl-open><span aria-hidden="true">{{ partial "icon.html" "plus" }}</span>Mulai</button>
+          </div>
+        </div>
+        <p class="bl-none" data-bl-none hidden>Tidak ada artikel yang cocok.</p>
+        {{ else }}
+        <p class="bl-none">Belum ada artikel. Buat file di <code>content/blog/</code>.</p>
+        {{ end }}
+      </div>
+
+      <aside class="bl-side">
+        {{ if $cats }}
+        <section class="bl-box">
+          <h2 class="bl-box__h"><span class="bl-ico" aria-hidden="true">{{ partial "icon.html" "kanban" }}</span>Kategori</h2>
+          <ul class="bl-catlist">
+            {{ range $cats }}<li><button type="button" data-filter="{{ . | urlize }}"><i aria-hidden="true"></i><span>{{ . }}</span><b>{{ index $counts . }}</b></button></li>{{ end }}
+          </ul>
+        </section>
+        {{ end }}
+
+        {{ if $posts }}
+        <section class="bl-box">
+          <h2 class="bl-box__h"><span class="bl-ico" aria-hidden="true">{{ partial "icon.html" "clock" }}</span>Artikel Terbaru</h2>
+          <ul class="bl-recent">
+            {{ range first 3 $posts }}
+            <li>
+              <a href="{{ .RelPermalink }}">
+                <span class="bl-thumb{{ if not .Params.image }} is-empty{{ end }}">{{ with .Params.image }}<img src="{{ . | relURL }}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}</span>
+                <span class="bl-recent__t"><strong>{{ .Title | truncate 60 }}</strong><small>{{ .Date.Format "2" }} {{ index $months (sub (int (.Date.Format "1")) 1) }} {{ .Date.Year }}</small></span>
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        </section>
+        {{ end }}
+
+        {{ if or site.Params.newsletterAction site.Params.email }}
+        <section class="bl-box">
+          <h2 class="bl-box__h"><span class="bl-ico" aria-hidden="true">{{ partial "icon.html" "mail" }}</span>Berlangganan Update</h2>
+          <p class="bl-box__p">Dapatkan artikel terbaru langsung ke email Anda.</p>
+          <form class="bl-sub" data-bl-sub data-mailto="{{ site.Params.email }}"{{ with site.Params.newsletterAction }} action="{{ . }}" method="post" target="_blank"{{ end }}>
+            <input type="email" name="email" required placeholder="Masukkan email Anda" aria-label="Email">
+            <button type="submit">Berlangganan</button>
+          </form>
+        </section>
+        {{ end }}
+      </aside>
+    </div>
+  </div>
+
+  <dialog class="bl-dlg" data-bl-dialog aria-labelledby="bl-dlg-title" data-repo="{{ $repo }}" data-branch="{{ $branch }}" data-show="{{ site.Params.showAddProject }}">
+    <form method="dialog" class="bl-dlg__form" data-bl-form>
+      <div class="bl-dlg__head">
+        <h2 id="bl-dlg-title">Tulis artikel baru</h2>
+        <button type="button" class="bl-dlg__x" data-bl-close aria-label="Tutup">&times;</button>
+      </div>
+      <label>Judul artikel<input name="title" required placeholder="mis. Pentingnya Monitoring Biodiversitas"></label>
+      <div class="bl-dlg__row">
+        <label>Kategori<input name="category" list="bl-cats" required placeholder="pilih atau ketik baru">
+          <datalist id="bl-cats">{{ range $cats }}<option value="{{ . }}">{{ end }}</datalist></label>
+        <label>Tanggal<input name="date" type="date" required></label>
+      </div>
+      <label>Ringkasan di kartu<textarea name="summary" rows="2" placeholder="Satu atau dua kalimat."></textarea></label>
+      <label>Nama file gambar <small>(unggah ke static/images/blog/)</small><input name="image" placeholder="nama-file.jpg"></label>
+      <label>Isi artikel <small>(boleh format Markdown)</small><textarea name="body" rows="6"></textarea></label>
+      <div class="bl-dlg__actions">
+        <a class="bl-dlg__go" data-bl-github target="_blank" rel="noopener">1. Buat artikel di GitHub</a>
+        <a class="bl-dlg__alt" data-bl-upload target="_blank" rel="noopener">2. Unggah gambar</a>
+        <button type="button" class="bl-dlg__alt" data-bl-copy>Salin teks</button>
+      </div>
+      <p class="bl-dlg__note" data-bl-note hidden>Isi artikel terlalu panjang untuk dibawa lewat tautan. Klik <b>Salin teks</b>, lalu tempel di editor GitHub.</p>
+      <p class="bl-dlg__hint">Di komputer sendiri: <code data-bl-cmd>hugo new blog/nama-artikel.md</code>. Setelah di-commit, situs diperbarui otomatis.</p>
+    </form>
+  </dialog>
+</section>
+<script src="{{ "js/blog.js" | relURL }}" defer></script>
+{{ end }}

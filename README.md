@@ -125,3 +125,73 @@ LinkedIn belum tampil karena `linkedin = ""`; isi URL-nya agar ikonnya muncul.
 
 Di `data/publications.yaml`, tambahkan item baru di bagian mana saja dengan `year` terisi.
 Beranda otomatis menampilkan publikasi dengan tahun paling baru di "Penelitian Terbaru".
+
+
+## Halaman Pengalaman (gaya LinkedIn)
+
+Pasang: `layouts/experience/list.html`, `static/css/experience.css`, `static/js/experience.js`, `layouts/partials/icon.html` (timpa), dan folder `content/experience/`.
+**Hapus berkas Pengalaman versi lama** kalau ada di repo-mu, karena bisa bentrok dan membuat halaman error / tampil rusak:
+`content/experience.md`, `layouts/_default/experience.html`, `data/experience.yaml`, dan `static/css/experience-page.css`.
+Sekarang `/experience/` adalah folder `content/experience/` (menu "Pengalaman" tetap jalan). Butuh Hugo 0.156 atau lebih baru (workflow-mu memakai 0.167).
+
+Setiap pengalaman = satu file di `content/experience/`. `start` boleh ditulis `"2026-07"`, `"2026-7"`, atau `2026-07-15`. Isi file (poin deskripsi) ditulis sebagai daftar:
+
+```
+---
+title: "Biodiversity Surveyor"      # jabatan
+company: "PT. ITS Tekno Sains"
+type: "Magang"                      # boleh kosong
+logo: "images/logo/its.png"         # taruh di static/images/logo/ (kosong = ikon tas)
+start: "2024-03"                    # tahun-bulan
+end: "2024-11"                      # kosong = Sekarang
+location: "Surabaya, Jawa Timur, Indonesia"
+mode: "Lapangan"                    # Di tempat / Hybrid / Remote / Lapangan
+skills: ["Survei Lapangan", "Pengolahan Data"]
+media: ["images/pengalaman/foto1.jpg"]   # opsional, thumbnail
+---
+- Poin deskripsi pertama.
+- Poin kedua.
+```
+
+Urutan otomatis dari `start` terbaru; durasi (mis. "1 thn 3 bln") dihitung otomatis. Deskripsi panjang dipotong 3 baris dengan "selengkapnya".
+Kelompok lain (mis. Organisasi): isi `group: "Organisasi"` di entri, lalu daftarkan urutannya di `groups` pada `_index.md`.
+
+Tombol **+** (dan pensil) di kanan judul, seperti LinkedIn, hanya tampil untuk pemilik (aturan sama seperti Tambah Karya Baru: localhost, `?tambah=1`, atau `showAddProject = true`).
+Tombol + membuka formulir yang menyiapkan file baru di GitHub; pensil di header membuka daftar file, pensil di tiap entri langsung mengedit entri itu.
+Data contoh diambil dari tangkapan layarmu; periksa tanggal, lokasi, dan nama perusahaannya.
+
+
+## Halaman Tentang Saya
+
+Pasang: `content/about.md` (timpa; **isi dan foto bisa kamu sesuaikan**), `layouts/_default/about.html`, `static/css/about.css`, `layouts/partials/icon.html` (timpa).
+Semuanya diatur dari front matter `content/about.md`: `heading`, `roles`, `quote`, `photo`, `name`, `education`, `location`, `note`,
+`skills` (nama + ikon), dan `details` (Pendidikan, Sertifikasi, dll; boleh dihapus). Paragraf di bawah front matter = isi "Tentang Saya".
+Ikon sosial diambil dari `hugo.toml` (linkedin, instagram, github, email); yang kosong tidak tampil.
+Foto: taruh di `static/images/`, isi `photo` (kosong = foto beranda). Foto persegi/potret paling pas karena dipotong bulat.
+
+## Halaman Blog
+
+Pasang: `layouts/blog/list.html`, `static/css/blog.css`, `static/js/blog.js`, `content/blog/_index.md` (timpa; berisi judul, pengantar, kutipan), `archetypes/blog.md`, `layouts/partials/icon.html` (timpa).
+Fitur: filter kategori (chip dan sidebar), pencarian, kartu 2 kolom, sidebar Kategori (+ jumlah), Artikel Terbaru, Berlangganan.
+
+Setiap artikel = satu file di `content/blog/`:
+
+```
+---
+title: "Judul"
+date: 2026-10-13
+categories: ["Ekologi & Biodiversitas"]   # yang pertama dipakai; huruf harus sama agar satu kategori
+image: "images/blog/nama.jpg"             # opsional, taruh di static/images/blog/
+summary: "Ringkasan di kartu."            # opsional (kalau kosong diambil dari awal isi)
+---
+Isi artikel...
+```
+
+Kategori baru otomatis menjadi chip dan muncul di sidebar. Waktu baca dihitung otomatis.
+
+**Tulis Artikel Baru**: tombol di toolbar dan kartu putus-putus di akhir daftar, hanya untuk pemilik (localhost, `/blog/?tambah=1`, atau `showAddProject = true`).
+Isi judul, kategori, tanggal, ringkasan, gambar, dan isi artikel, lalu "Buat artikel di GitHub" (file sudah terisi, tinggal Commit) dan "Unggah gambar".
+Artikel yang sangat panjang tidak muat di tautan; pakai "Salin teks" lalu tempel di editor GitHub (formulir memberi tahu otomatis).
+
+**Berlangganan**: situs ini statis, jadi tidak ada server yang menyimpan email. Secara bawaan tombolnya membuka email ke alamat di `hugo.toml`.
+Untuk daftar langganan sungguhan, buat form di layanan seperti Buttondown atau Formspree, lalu isi `newsletterAction = "https://...."` di `[params]`.

@@ -1,0 +1,16 @@
+{{- /*
+  Membaca "tahun-bulan" dengan toleran. Terima: "2026-07", "2026-7", 2026-07-15, "2026", dll.
+  Mengembalikan dict: ok (bool), y (tahun), m (bulan 1-12), key (angka untuk mengurutkan).
+  Dipakai: {{ $d := partial "ym.html" .Params.start }}
+*/ -}}
+{{- $s := "" -}}
+{{- with . }}{{ $s = replaceRE `[ T].*$` "" (string .) }}{{ end -}}
+{{- $y := 0 -}}{{- $m := 1 -}}{{- $ok := false -}}
+{{- if findRE `^\d{4}` $s -}}
+  {{- $ok = true -}}
+  {{- $parts := split $s "-" -}}
+  {{- $y = int (index $parts 0) -}}
+  {{- if gt (len $parts) 1 }}{{ with findRE `^\d{1,2}` (index $parts 1) }}{{ $m = int (strings.TrimPrefix "0" (index . 0)) }}{{ end }}{{ end -}}
+  {{- if or (lt $m 1) (gt $m 12) }}{{ $m = 1 }}{{ end -}}
+{{- end -}}
+{{- return (dict "ok" $ok "y" $y "m" $m "key" (add (mul $y 100) $m)) -}}

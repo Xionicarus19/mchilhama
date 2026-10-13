@@ -1,0 +1,77 @@
+{{- /*
+  Halaman Tentang Saya. Semua isi diatur dari front matter content/about.md
+  (heading, roles, quote, photo, name, education, location, note, skills, details). Isi file = paragraf "Tentang Saya".
+  Tautan sosial diambil dari hugo.toml (linkedin, instagram, github, email).
+*/ -}}
+{{ define "main" }}
+<link rel="stylesheet" href="{{ "css/about.css" | relURL }}">
+{{- $photo := .Params.photo | default site.Params.heroPhoto -}}
+<section class="ab-hero">
+  <div class="wrap ab-hero__in">
+    <div>
+      <p class="ab-kicker">{{ .Title }}</p>
+      <h1 class="ab-title">{{ .Params.heading | default site.Params.heroName }}</h1>
+      {{ with .Params.roles }}<p class="ab-roles">{{ . }}</p>{{ end }}
+    </div>
+    {{ with .Params.quote }}<blockquote class="ab-quote"><p>&ldquo;{{ . }}&rdquo;</p></blockquote>{{ end }}
+  </div>
+</section>
+
+<section class="ab">
+  <div class="wrap ab-grid">
+    <aside class="ab-side">
+      <div class="ab-photo{{ if not $photo }} is-empty{{ end }}">
+        {{ with $photo }}<img src="{{ . | relURL }}" alt="{{ $.Params.name | default site.Params.heroName }}" decoding="async" onerror="this.parentElement.classList.add('is-empty');this.remove()">{{ end }}
+      </div>
+      <ul class="ab-facts">
+        {{ with .Params.name }}<li><span class="ab-ico" aria-hidden="true">{{ partial "icon.html" "user" }}</span><strong>{{ . }}</strong></li>{{ end }}
+        {{ with .Params.education }}<li><span class="ab-ico" aria-hidden="true">{{ partial "icon.html" "graduation" }}</span>{{ . }}</li>{{ end }}
+        {{ with .Params.location }}<li><span class="ab-ico" aria-hidden="true">{{ partial "icon.html" "map-pin" }}</span>{{ . }}</li>{{ end }}
+      </ul>
+      {{- $links := slice -}}
+      {{- with site.Params.linkedin }}{{ $links = $links | append (dict "l" "LinkedIn" "i" "linkedin" "h" .) }}{{ end -}}
+      {{- with site.Params.instagram }}{{ $links = $links | append (dict "l" "Instagram" "i" "instagram" "h" .) }}{{ end -}}
+      {{- with site.Params.github }}{{ $links = $links | append (dict "l" "GitHub" "i" "github" "h" .) }}{{ end -}}
+      {{- with site.Params.email }}{{ $links = $links | append (dict "l" "Email" "i" "mail" "h" (printf "mailto:%s" .)) }}{{ end -}}
+      {{ if $links }}
+      <ul class="ab-social" aria-label="Tautan sosial">
+        {{ range $links }}<li><a href="{{ .h }}" aria-label="{{ .l }}"{{ if hasPrefix .h "http" }} target="_blank" rel="noopener"{{ end }}>{{ partial "icon.html" .i }}</a></li>{{ end }}
+      </ul>
+      {{ end }}
+      {{ with .Params.note }}<p class="ab-note">{{ . }}</p>{{ end }}
+    </aside>
+
+    <div class="ab-rule" aria-hidden="true"></div>
+
+    <div class="ab-main">
+      <section class="ab-block">
+        <h2 class="ab-h"><span class="ab-h__ico" aria-hidden="true">{{ partial "icon.html" "leaf" }}</span>Tentang Saya</h2>
+        <div class="ab-prose">{{ .Content }}</div>
+      </section>
+
+      {{ with .Params.skills }}
+      <section class="ab-block ab-block--line">
+        <h2 class="ab-h"><span class="ab-h__ico" aria-hidden="true">{{ partial "icon.html" "microscope" }}</span>Keahlian</h2>
+        <ul class="ab-chips">
+          {{ range . }}<li><span class="ab-chip"><span class="ab-chip__ico" aria-hidden="true">{{ partial "icon.html" .icon }}</span>{{ .name }}</span></li>{{ end }}
+        </ul>
+      </section>
+      {{ end }}
+
+      {{ with .Params.details }}
+      <section class="ab-block ab-block--line">
+        <div class="ab-details">
+          {{ range . }}
+          <div class="ab-detail">
+            <h3>{{ .title }}</h3>
+            <ul>{{ range .items }}<li>{{ . }}</li>{{ end }}</ul>
+          </div>
+          {{ end }}
+        </div>
+        {{ with site.Params.cvFile }}<a class="ab-cv" href="{{ . | relURL }}" download>Unduh CV <span aria-hidden="true">&darr;</span></a>{{ end }}
+      </section>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
